@@ -1,8 +1,8 @@
 <script>
   import { selectedCountryCode } from "./main.store";
   import { afterUpdate } from 'svelte';
-  export let body = [];
-  let tBody, table;
+  export let body;
+  let tBody;
   
   afterUpdate(() => {
     const selected = tBody.querySelector(".selected");
@@ -49,7 +49,7 @@
   }
 </style>
 
-<table bind:this={table}>
+<table>
   <thead>
     <tr>
       <th>Country/Region</th>

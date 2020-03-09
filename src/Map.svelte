@@ -5,35 +5,20 @@
   import world from "./world-mill.json";
 
   export let data = [];
-  export let countryCodes = [];;
-  
+  export let countryCodes = [];
+
   const paths = world.paths;
-  const countries = Object.keys(world.paths);
-  const hash = (str) => {
-    let hash = 0;
-    let chr;
-    if (str.length === 0) return hash;
-    for (let i = 0; i < str.length; i++) {
-      chr = str.charCodeAt(i);
-      hash = (hash * 31) + chr;
-      hash |= 0;
-    }
-    return hash;
-  };
-  const hashToCol = (hash) => {
-    return Math.floor((hash/2147483647)*360);
-  }
+  const countries = [];
+  Object.keys(world.paths).forEach((code)=>{
+    countries.push({
+      code
+    })
+  })
 
-  const color = (val) => {
-    // return "hsl(" + val + ",50%,60%)";
-    return "hsl(100,50%,60%)";
-  };
-
-  const nameToCol = (name) => {
-    return color(hashToCol(hash(name)));
-  }
+  $: countryCodes.length ? countries = countries : false;
 
   const codeToCol = (code) => {
+    console.log(code, countryCodes.length);
     if (countryCodes.indexOf(code) !== -1) {
       return "hsl(100,50%,60%)";
     } else {
@@ -80,15 +65,15 @@
     <g>
       {#each countries as country}
         <path
-          style="fill:{codeToCol(paths[country].countryCode)}; stroke:red; stroke-width: {country == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
-          d={paths[country].path}
+          style="fill:{codeToCol(country.code)}; stroke:red; stroke-width: {country.code == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
+          d={paths[country.code].path}
           on:mouseover={() => {
-            selectedCountryCode.set(country);
+            selectedCountryCode.set(country.code);
           }}
           on:mouseout={() => {
             selectedCountryCode.set('');
           }}
-          on:click={() => console.log('hi', paths[country].name)} />
+          on:click={() => console.log('hi', paths[country.code].name, codeToCol(country.code))} />
       {/each}
     </g>
   </svg>

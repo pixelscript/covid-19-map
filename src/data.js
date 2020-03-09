@@ -16,11 +16,6 @@ class Data {
     body = this.sort(body, ['country', 'province']);
     let {combined, countryCodes} = this.combine(body); body = combined;
     body = this.sort(body, ['total']).reverse();
-    console.log({
-      header,
-      body,
-      countryCodes
-    })
     return {
       header,
       body,

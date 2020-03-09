@@ -8,7 +8,10 @@
   let body = [];
   let countryCodes = [];
   (async () => {
-    const {header, body, countryCodes} = await data.fetch();
+		const obj = await data.fetch();
+		header = obj.header;
+		body = obj.body;
+		countryCodes = obj.countryCodes;
   })();
 </script>
 
@@ -39,7 +42,7 @@
 
 <main class="grid-container">
   <div class="map">
-    <Map {body} {countryCodes}/>
+    <Map {body} {countryCodes} />
   </div>
   <div class="table">
     <Table class="table" {body} />
