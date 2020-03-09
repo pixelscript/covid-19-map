@@ -45,6 +45,6 @@
     <Map {body} {countryCodes} />
   </div>
   <div class="table">
-    <Table class="table" {body} />
+    <Table class="table"{body} {countryCodes}  />
   </div>
 </main>

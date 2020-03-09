@@ -1,29 +1,39 @@
 <script>
   import { draw } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+  import _ from 'lodash';
   import { selectedCountryCode } from './main.store';
   import world from "./world-mill.json";
 
-  export let data = [];
+  export let body = [];
   export let countryCodes = [];
 
   const paths = world.paths;
-  const countries = [];
-  Object.keys(world.paths).forEach((code)=>{
-    countries.push({
-      code
-    })
-  })
+  let countries = [];
+  
+  $: if (body.length && countryCodes.length) {
+    Object.keys(paths).forEach((code)=>{
+      const d =  _.find(body, {code});
+      const total = d ? d.total : 0;
+      const log = d ? d.log : 0;
+      const hasData = d ? true : false;
+      countries.push({
+        code,
+        path: paths[code].path,
+        name: paths[code].name,
+        color: logToCol(hasData,log),
+        hasData,
+        total
+      })
+    });
+    countries = countries;
+  }
 
-  $: countryCodes.length ? countries = countries : false;
-
-  const codeToCol = (code) => {
-    console.log(code, countryCodes.length);
-    if (countryCodes.indexOf(code) !== -1) {
-      return "hsl(100,50%,60%)";
-    } else {
-      return "hsl(100,0%,60%)";
+  function logToCol(hasData,log){
+    if(!hasData) {
+      return "hsl(10,0%,70%)";
     }
+    return "hsl(10,"+ log +"%,60%)";
   }
 </script>
 
@@ -41,7 +51,7 @@
     margin: 0 0 1em 0;
   }
   path {
-    cursor: pointer;
+    /* cursor: pointer; */
   }
   figure {
     padding: 10px;
@@ -65,15 +75,19 @@
     <g>
       {#each countries as country}
         <path
-          style="fill:{codeToCol(country.code)}; stroke:red; stroke-width: {country.code == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
-          d={paths[country.code].path}
+          style="cursor: {country.hasData ? 'pointer' : 'normal'}; fill:{country.color}; stroke:hsl(100,25%,16%); stroke-width: {country.code == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
+          d={country.path}
           on:mouseover={() => {
-            selectedCountryCode.set(country.code);
+            if(country.hasData) {
+              selectedCountryCode.set(country.code);
+            }
           }}
           on:mouseout={() => {
-            selectedCountryCode.set('');
+            if(country.hasData) {
+              selectedCountryCode.set('');
+            }
           }}
-          on:click={() => console.log('hi', paths[country.code].name, codeToCol(country.code))} />
+          on:click={() => console.log('hi', country.name, country.total)} />
       {/each}
     </g>
   </svg>

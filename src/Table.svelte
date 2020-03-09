@@ -2,11 +2,12 @@
   import { selectedCountryCode } from "./main.store";
   import { afterUpdate } from 'svelte';
   export let body;
+  export let countryCodes;
   let tBody;
-  
+  let over = false;
   afterUpdate(() => {
     const selected = tBody.querySelector(".selected");
-    if(selected) {
+    if(selected && !over) {
       selected.scrollIntoView(false);
     }
   });
@@ -49,7 +50,7 @@
   }
 </style>
 
-<table>
+<table on:mouseover="{()=> console.log(over = true)}" on:mouseleave="{()=> console.log(over = false)}">
   <thead>
     <tr>
       <th>Country/Region</th>
@@ -60,11 +61,11 @@
   <tbody bind:this={tBody}>
     {#each body as row}
       <tr
-        class={row.countryCode === $selectedCountryCode ? 'selected' : ''}
+        class={row.code === $selectedCountryCode ? 'selected' : ''}
         on:mouseover={() => {
-          selectedCountryCode.set(row.countryCode);
+          selectedCountryCode.set(row.code);
         }}>
-        <td>{row.country} ({row.countryCode})</td>
+        <td>{row.country} ({row.code})</td>
         <td>{row.province}</td>
         <td>{row.total}</td>
       </tr>

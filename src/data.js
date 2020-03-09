@@ -16,6 +16,7 @@ class Data {
     body = this.sort(body, ['country', 'province']);
     let {combined, countryCodes} = this.combine(body); body = combined;
     body = this.sort(body, ['total']).reverse();
+    body = this.addLog(body);
     return {
       header,
       body,
@@ -51,7 +52,7 @@ class Data {
       const country = this.rewriteCountry(row[1]);
       organised.push({
         country: country,
-        countryCode: NAMES[country],
+        code: NAMES[country],
         province: row[0],
         location: {
           lat: row[2],
@@ -64,6 +65,24 @@ class Data {
     return organised;
   }
 
+  addLog(data) {
+    let iteration = [];
+    data.forEach((item)=>{
+      iteration.push(Math.log10(item.total/data[0].total));
+    });
+    iteration.forEach((item, index, arr)=>{
+      arr[index] = item + (0 - iteration[iteration.length-1]);
+    });
+    const top = iteration[0];
+    iteration.forEach((item, index, arr)=>{
+      arr[index] = (item / top)*100;
+    });
+    data.forEach((item, index, arr)=>{
+      arr[index].log = iteration[index];
+    });
+    return data;
+  }
+
   combine(data) {
     let lastCountry = '';
     const countryCodes = [];
@@ -74,7 +93,7 @@ class Data {
         data.splice(i,1);
         i--;
       } else {
-        countryCodes.push(row.countryCode);
+        countryCodes.push(row.code);
       }
       lastCountry = row.country;
     };
