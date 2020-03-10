@@ -24,7 +24,7 @@
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0fr 1fr;
     grid-template-areas: "map" "table";
 		height:100%;
   }

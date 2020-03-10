@@ -54,7 +54,6 @@
   <thead>
     <tr>
       <th>Country/Region</th>
-      <th>Province/State</th>
       <th>Total</th>
     </tr>
   </thead>
@@ -66,7 +65,6 @@
           selectedCountryCode.set(row.code);
         }}>
         <td>{row.country} ({row.code})</td>
-        <td>{row.province}</td>
         <td>{row.total}</td>
       </tr>
     {/each}
