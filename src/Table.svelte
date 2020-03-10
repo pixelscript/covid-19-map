@@ -48,7 +48,7 @@
     padding: 0.5rem;
   }
 </style>
-<table on:mouseover="{()=> console.log(over = true)}" on:mouseleave="{()=> console.log(over = false)}">
+<table on:mouseover="{()=> over = true}" on:mouseleave="{()=> over = false}">
   <thead>
     <tr>
       <th>Country/Region</th>
