@@ -52,7 +52,7 @@
   <thead>
     <tr>
       <th>Country/Region</th>
-      <th>Total</th>
+      <th>Number of confirmed cases</th>
     </tr>
   </thead>
   <tbody bind:this={tBody}>
@@ -63,7 +63,7 @@
           selectedCountryCode.set(row.code);
         }}>
         <td>{row.country} ({row.code})</td>
-        <td>{row.data[$selectedDateIndex].value}</td>
+        <td>{row.data[$selectedDateIndex].value.toLocaleString()}</td>
       </tr>
     {/each}
   </tbody>

@@ -27,9 +27,10 @@
     margin-bottom: 1em;
   }
 
-  button, input {
+  button,
+  input {
     vertical-align: middle;
-    display:inline-block;
+    display: inline-block;
     height: 2.5em;
   }
 
@@ -43,12 +44,12 @@
 
   .button {
     grid-area: button;
-    padding:0.5em;
+    padding: 0.5em;
   }
 
   .slider {
     grid-area: slider;
-    padding:0.5em;
+    padding: 0.5em;
   }
 </style>
 
@@ -66,6 +67,6 @@
     class="slider"
     type="range"
     min="0"
-    max="{dates.length-1}"
+    max={dates.length - 1}
     bind:value={$selectedDateIndex} />
 </section>

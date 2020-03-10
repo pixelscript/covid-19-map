@@ -73,7 +73,7 @@ class Data {
       const country = this.rewriteCountry(row[1]);
       organised.push({
         country: country,
-        code: NAMES[country],
+        code: NAMES[country] ? NAMES[country] : row[0],
         province: row[0],
         location: {
           lat: row[2],

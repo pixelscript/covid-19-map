@@ -1,6 +1,7 @@
 <script>
   import Map from "./Map.svelte";
   import Table from "./Table.svelte";
+  import Total from "./Total.svelte";
   import Slider from "./Slider.svelte";
   import data from "./data";
 </script>
@@ -18,8 +19,8 @@
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0fr 0fr 0fr 1fr 0fr;
-    grid-template-areas: "header" "map" "slider" "table" "footer";
+    grid-template-rows: 0fr 0fr 0fr 0fr 1fr 2.7em;
+    grid-template-areas: "header" "map" "total" "slider" "table" "footer";
 		height:100%;
   }
 
@@ -43,12 +44,16 @@
   }
 
   a {
-    color: #AAA;
-    text-decoration: none;
+    color: #999;
+    text-decoration: underline;
   }
 
   .slider {
     grid-area: slider;
+  }
+
+  .total {
+    grid-area: total;
   }
 
   .map {
@@ -61,7 +66,7 @@
 		overflow: scroll;
   }
 
-  .footer {
+  footer {
     grid-area: footer;
 		overflow: scroll;
   }
@@ -77,6 +82,9 @@
   <div class="map">
     <Map body="{data.body}" countryCodes="{data.countryCodes}" />
   </div>
+  <div class="total">
+    <Total body="{data.body}"/>
+  </div>
   <div class="slider">
     <Slider dates="{data.dates}"/>
   </div>
@@ -84,7 +92,7 @@
     <Table class="table" body="{data.body}" countryCodes="{data.countryCodes}"  />
   </div>
   <footer>
-    <span>Data source: <a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a></span>
+    <span>Data source: <a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a> | Made By: <a href="http://www.pixelscript.net/">pixelscript</a> | Source: <a href="https://github.com/pixelscript/covid-19-map">https://github.com/pixelscript/covid-19-map</a></span>
   </footer>
 </main>
 {/await}
