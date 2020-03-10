@@ -4,29 +4,34 @@ class Data {
   constructor() {}
 
   process(data) {
-    let header;
     let body;
     let rows = data.split('\n');
     rows.forEach((row, index, arr) => {
       arr[index] = row.split(/,(?=\S)|:/);
     });
-    header = rows[0];
+    const header = rows[0];
+    const dates = header.slice(4);
     body = rows.splice(1);
-    body = body.filter((v)=> v.length>=50);
+    body = body.filter(v => v.length >= 50);
     body = this.structure(body);
     body = this.sort(body, ['country', 'province']);
     let { combined, countryCodes } = this.combine(body);
     body = combined;
     body = this.sort(body, ['total']).reverse();
     body[0].data.forEach((item, index) => {
-      this.addLogToObjectUnderKey(body, 'data['+index+'].value', 'data['+index+'].log', body[0].total);
+      this.addLogToObjectUnderKey(
+        body,
+        'data[' + index + '].value',
+        'data[' + index + '].log',
+        body[0].total
+      );
     });
     body = this.addLogToObjectUnderKey(body, 'total', 'log', body[0].total);
-    console.log(body);
     return {
       header,
       body,
-      countryCodes
+      countryCodes,
+      dates
     };
   }
   rewriteCountry(country) {
@@ -55,7 +60,7 @@ class Data {
 
   arrayOfValuesIntoObject(values, key) {
     values.forEach((value, index, arr) => {
-      let a = {}
+      let a = {};
       a[key] = Number(value);
       arr[index] = a;
     });
@@ -74,7 +79,7 @@ class Data {
           lat: row[2],
           long: row[3]
         },
-        data: this.arrayOfValuesIntoObject(row.slice(4),'value'),
+        data: this.arrayOfValuesIntoObject(row.slice(4), 'value'),
         total: Number(row[row.length - 1])
       });
     });
@@ -82,20 +87,10 @@ class Data {
   }
 
   addLogToObjectUnderKey(data, keyIn, keyOut, max) {
-    let iteration = [];
-    data.forEach(item => {
-      iteration.push(Math.log10(_.get(item,keyIn) / max));
-    });
-    console.log(iteration);
-    iteration.forEach((item, index, arr) => {
-      arr[index] = item + (0 - iteration[iteration.length - 1]);
-    });
-    const top = iteration[0];
-    iteration.forEach((item, index, arr) => {
-      arr[index] = (item / top) * 100;
-    });
+    const maxLog = Math.log10(max);
     data.forEach((item, index, arr) => {
-       _.set(arr[index],keyOut,iteration[index]);
+      let a = (Math.max(0,Math.log10(_.get(item, keyIn))) / maxLog) * 100;
+      _.set(arr[index], keyOut, a);
     });
     return data;
   }
@@ -107,6 +102,9 @@ class Data {
       const row = data[i];
       if (row.country === lastCountry) {
         data[i - 1].total += row.total;
+        data[i - 1].data.forEach((val, index, arr) =>{
+          data[i - 1].data[index].value += row.data[index].value;
+        });
         data.splice(i, 1);
         i--;
       } else {

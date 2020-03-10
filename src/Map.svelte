@@ -2,26 +2,26 @@
   import { draw } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import _ from 'lodash';
-  import { selectedCountryCode } from './main.store';
+  import { selectedCountryCode, selectedDateIndex } from './main.store';
   import world from "./world-mill.json";
 
   export let body = [];
   export let countryCodes = [];
 
   const paths = world.paths;
-  let countries = [];
-  
-  $: if (body.length && countryCodes.length) {
+  let countries;
+  $: if (body.length && countryCodes.length && !isNaN($selectedDateIndex)) {
+    countries= [];
     Object.keys(paths).forEach((code)=>{
       const d =  _.find(body, {code});
-      const total = d ? d.total : 0;
-      const log = d ? d.log : 0;
+      const total = d ? d.data[$selectedDateIndex].value : 0;
+      const log = d ? d.data[$selectedDateIndex].log : 0;
       const hasData = d ? true : false;
       countries.push({
         code,
         path: paths[code].path,
         name: paths[code].name,
-        color: logToCol(hasData,log),
+        color: logToCol(total,log),
         hasData,
         total
       })
@@ -29,8 +29,8 @@
     countries = countries;
   }
 
-  function logToCol(hasData,log){
-    if(!hasData) {
+  function logToCol(total,log){
+    if(!total) {
       return "hsl(10,0%,70%)";
     }
     return "hsl(10,"+ log +"%,60%)";
@@ -87,7 +87,7 @@
               selectedCountryCode.set('');
             }
           }}
-          on:click={() => console.log('hi', country.name, country.total)} />
+        />
       {/each}
     </g>
   </svg>

@@ -1,8 +1,7 @@
 <script>
-  import { selectedCountryCode } from "./main.store";
+  import { selectedCountryCode, selectedDateIndex } from "./main.store";
   import { afterUpdate } from 'svelte';
   export let body;
-  export let countryCodes;
   let tBody;
   let over = false;
   afterUpdate(() => {
@@ -25,7 +24,7 @@
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
   }
   table tr th {
-    background: #162941;
+    background: #52657c;
     color: white;
     text-align: left;
   }
@@ -49,7 +48,6 @@
     padding: 0.5rem;
   }
 </style>
-
 <table on:mouseover="{()=> console.log(over = true)}" on:mouseleave="{()=> console.log(over = false)}">
   <thead>
     <tr>
@@ -65,7 +63,7 @@
           selectedCountryCode.set(row.code);
         }}>
         <td>{row.country} ({row.code})</td>
-        <td>{row.total}</td>
+        <td>{row.data[$selectedDateIndex].value}</td>
       </tr>
     {/each}
   </tbody>
