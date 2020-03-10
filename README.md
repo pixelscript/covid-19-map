@@ -1,5 +1,7 @@
 # COVID-19 Tracker App
 
+![](screen.png)
+
 ## Get started
 
 Install the dependencies...
