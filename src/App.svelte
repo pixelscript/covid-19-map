@@ -63,7 +63,8 @@
 
   .table {
     grid-area: table;
-		overflow: scroll;
+    overflow: scroll;
+    min-height:8em;
   }
 
   footer {
