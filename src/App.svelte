@@ -18,13 +18,13 @@
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0fr 1fr;
-    grid-template-areas: "header" "map" "slider" "table";
+    grid-template-rows: 0fr 0fr 0fr 1fr 0fr;
+    grid-template-areas: "header" "map" "slider" "table" "footer";
 		height:100%;
   }
 
 
-  .header {
+  h1, span {
     grid-area: header;
     text-align:center;
     margin:0;
@@ -32,6 +32,19 @@
     background: #b99a9a;
     color: white;
     font-size:1.5em;
+  }
+  span {
+    font-size: 0.8em;
+    width:100%;
+    box-sizing: border-box;
+    background: #eee;
+    color: #AAA;
+    display: inline-block;
+  }
+
+  a {
+    color: #AAA;
+    text-decoration: none;
   }
 
   .slider {
@@ -45,6 +58,11 @@
 
   .table {
     grid-area: table;
+		overflow: scroll;
+  }
+
+  .footer {
+    grid-area: footer;
 		overflow: scroll;
   }
 </style>
@@ -65,5 +83,8 @@
   <div class="table">
     <Table class="table" body="{data.body}" countryCodes="{data.countryCodes}"  />
   </div>
+  <footer>
+    <span>Data source: <a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a></span>
+  </footer>
 </main>
 {/await}
