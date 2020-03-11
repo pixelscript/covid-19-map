@@ -12,18 +12,6 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-@media (max-width: 800px) {
-	.grid-container {
-		font-size: 0.7em;
-	}
-}
-
-@media (max-width: 600px) {
-	.grid-container {
-		font-size: 0.5em;
-	}
-}
-
 a {
 	color: rgb(0,100,200);
 	text-decoration: none;

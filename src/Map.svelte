@@ -4,6 +4,7 @@
   import _ from 'lodash';
   import { selectedCountryCode, selectedDateIndex } from './main.store';
   import world from "./world-mill.json";
+  import { fade } from 'svelte/transition';
 
   export let body = [];
   export let countryCodes = [];
@@ -42,16 +43,13 @@
     margin: 0 0 1em 0;
     text-align: center;
     margin: 0 auto;
-    max-height:100%;
-    max-width:1400px;
+    height:100%;
   }
 
   svg {
     width: 100%;
     margin: 0 0 1em 0;
-  }
-  path {
-    /* cursor: pointer; */
+    height:100%;
   }
   figure {
     padding: 10px;
@@ -73,7 +71,7 @@
     {world.height}"
     xml:space="preserve">
     <g>
-      {#each countries as country}
+      {#each countries as country (country)}
         <path
           style="cursor: {country.hasData ? 'pointer' : 'normal'}; fill:{country.color}; stroke:hsl(100,25%,16%); stroke-width: {country.code == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
           d={country.path}

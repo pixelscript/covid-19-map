@@ -1,12 +1,12 @@
 <script>
   import { selectedCountryCode, selectedDateIndex } from "./main.store";
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate } from "svelte";
   export let body;
   let tBody;
   let over = false;
   afterUpdate(() => {
     const selected = tBody.querySelector(".selected");
-    if(selected && !over) {
+    if (selected && !over) {
       selected.scrollIntoView(false);
     }
   });
@@ -16,12 +16,24 @@
   table {
     width: 100%;
     max-height: 100%;
+    border-color: red;
+    background:white;
+  }
+
+  .hider {
+    background: white;
+    position: absolute;
+    left:0;
+    right:0;
+    z-index:1;
+  }
+  thead {
+    background: white;
   }
   th {
-    background: white;
-    position: sticky;
-    top: 0;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        position: sticky;
+    top: 2px;
   }
   table tr th {
     background: #52657c;
@@ -48,11 +60,12 @@
     padding: 0.5rem;
   }
 </style>
-<table on:mouseover="{()=> over = true}" on:mouseleave="{()=> over = false}">
+<div class="hider"></div>
+<table on:mouseover={() => (over = true)} on:mouseleave={() => (over = false)}>
   <thead>
     <tr>
       <th>Country/Region</th>
-      <th>Number of confirmed cases</th>
+      <th>Confirmed cases</th>
     </tr>
   </thead>
   <tbody bind:this={tBody}>
@@ -62,7 +75,10 @@
         on:mouseover={() => {
           selectedCountryCode.set(row.code);
         }}>
-        <td>{row.country} {#if row.code}({row.code}){/if}</td>
+        <td>
+          {row.country}
+          {#if row.code}({row.code}){/if}
+        </td>
         <td>{row.data[$selectedDateIndex].value.toLocaleString()}</td>
       </tr>
     {/each}
