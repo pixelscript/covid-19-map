@@ -140,7 +140,7 @@ class Data {
 
   async network() {
     const response = await fetch(
-      'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
+      './data.csv'
     );
     if (response.ok) {
       const content = await response.text();
