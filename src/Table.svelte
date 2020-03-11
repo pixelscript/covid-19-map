@@ -62,7 +62,7 @@
         on:mouseover={() => {
           selectedCountryCode.set(row.code);
         }}>
-        <td>{row.country} ({row.code})</td>
+        <td>{row.country} {#if row.code}({row.code}){/if}</td>
         <td>{row.data[$selectedDateIndex].value.toLocaleString()}</td>
       </tr>
     {/each}
