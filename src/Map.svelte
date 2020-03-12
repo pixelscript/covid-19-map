@@ -82,7 +82,7 @@
           }}
           on:mouseout={() => {
             if(country.hasData) {
-              selectedCountryCode.set('');
+              selectedCountryCode.set(null);
             }
           }}
         />

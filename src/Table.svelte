@@ -23,9 +23,10 @@
   .hider {
     background: white;
     position: absolute;
-    left:0;
-    right:0;
+    height:2px;
+    width:100%;
     z-index:1;
+    left:0px;
   }
   thead {
     background: white;
@@ -77,7 +78,6 @@
         }}>
         <td>
           {row.country}
-          {#if row.code}({row.code}){/if}
         </td>
         <td>{row.data[$selectedDateIndex].value.toLocaleString()}</td>
       </tr>

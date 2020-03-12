@@ -34,7 +34,7 @@
     }
 
     .map {
-      margin-top:2px;
+      margin-top: 2px;
     }
   }
 
@@ -50,6 +50,11 @@
     }
   }
 
+  @media (max-width: 600px) {
+    .grid-container {
+      font-size: 0.5em;
+    }
+  }
   h1,
   span {
     grid-area: header;
