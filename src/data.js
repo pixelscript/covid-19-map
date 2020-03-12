@@ -10,10 +10,10 @@ class Data {
       arr[index] = row.split(/,(?=\S)|:/);
     });
     const header = rows[0];
-    const dates = header.slice(4);
+    let dates = header.slice(4);
+    dates = dates.map(this.formatDate)
     body = rows.splice(1);
     body = body.filter(v => v.length >= 50);
-    body = this.tidy(body);
     body = this.structure(body);
     body = this.sort(body, ['country', 'province']);
     let { combined, countryCodes } = this.combine(body);
@@ -35,22 +35,13 @@ class Data {
       dates
     };
   }
-  tidy(data){
-    let total = 0;
-    data.forEach((item, index, array)=>{
-      total += item.length;
-    })
-    let average = total/data.length;
-    let rowCount = Math.ceil(average);
-    data.forEach((item, index, array)=>{
-      item.forEach((value,index,arr)=>{
-        arr[index] = value.replace(',','');
-      })
-      while(item.length !== rowCount) {
-        item.push(item[item.length-1]);
-      }
-    });
-    return data;
+  formatDate(date){
+    let da = date.split('/');
+    let d = new Date();
+    d.setMonth(Number(da[0])-1);
+    d.setDate(da[1]);
+    d.setYear(String('20' + da[2]));
+    return d.toLocaleDateString();
   }
   rewriteCountry(country) {
     if (country === 'Mainland China') {
