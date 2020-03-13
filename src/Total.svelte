@@ -6,7 +6,7 @@
   const calcTotal = () => {
     let total = 0;
     body.forEach(country => {
-      total += country.data[$selectedDateIndex].value;
+      total += country.data[$selectedDateIndex]['cases'].value;
     });
     return total.toLocaleString();
   };

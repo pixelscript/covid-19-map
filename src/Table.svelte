@@ -17,23 +17,23 @@
     width: 100%;
     max-height: 100%;
     border-color: red;
-    background:white;
+    background: white;
   }
 
   .hider {
     background: white;
     position: absolute;
-    height:2px;
-    width:100%;
-    z-index:1;
-    left:0px;
+    height: 2px;
+    width: 100%;
+    z-index: 1;
+    left: 0px;
   }
   thead {
     background: white;
   }
   th {
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-        position: sticky;
+    position: sticky;
     top: 2px;
   }
   table tr th {
@@ -61,7 +61,8 @@
     padding: 0.5rem;
   }
 </style>
-<div class="hider"></div>
+
+<div class="hider" />
 <table on:mouseover={() => (over = true)} on:mouseleave={() => (over = false)}>
   <thead>
     <tr>
@@ -72,14 +73,12 @@
   <tbody bind:this={tBody}>
     {#each body as row}
       <tr
-        class={row.code === $selectedCountryCode ? 'selected' : ''}
+        class={row.codeA2 === $selectedCountryCode ? 'selected' : ''}
         on:mouseover={() => {
-          selectedCountryCode.set(row.code);
+          selectedCountryCode.set(row.codeA2);
         }}>
-        <td>
-          {row.country}
-        </td>
-        <td>{row.data[$selectedDateIndex].value.toLocaleString()}</td>
+        <td>{row.name}</td>
+        <td>{row.data[$selectedDateIndex]['cases'].value.toLocaleString()}</td>
       </tr>
     {/each}
   </tbody>

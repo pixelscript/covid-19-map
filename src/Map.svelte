@@ -7,16 +7,15 @@
   import { fade } from 'svelte/transition';
 
   export let body = [];
-  export let countryCodes = [];
 
   const paths = world.paths;
   let countries;
-  $: if (body.length && countryCodes.length && !isNaN($selectedDateIndex)) {
+  $: if (body.length && !isNaN($selectedDateIndex)) {
     countries= [];
     Object.keys(paths).forEach((code)=>{
-      const d =  _.find(body, {code});
-      const total = d ? d.data[$selectedDateIndex].value : 0;
-      const log = d ? d.data[$selectedDateIndex].log : 0;
+      const d =  _.find(body, {codeA2: code});
+      const total = d ? d.data[$selectedDateIndex]['cases'].value : 0;
+      const log = d ? d.data[$selectedDateIndex]['cases'].logPercent : 0;
       const hasData = d ? true : false;
       countries.push({
         code,

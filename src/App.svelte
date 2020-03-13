@@ -113,16 +113,16 @@
   <main class="grid-container">
     <h1 class="header">Confirmed COVID-19 Cases over time</h1>
     <div class="map">
-      <Map body={data.body} countryCodes={data.countryCodes} />
+      <Map body={data.countries} countryCodes={data.countryCodes} />
     </div>
     <div class="total">
-      <Total body={data.body} />
+      <Total body={data.countries} />
     </div>
     <div class="slider">
       <Slider dates={data.dates} />
     </div>
     <div class="table">
-      <Table class="table" body={data.body} countryCodes={data.countryCodes} />
+      <Table class="table" body={data.countries} countryCodes={data.countryCodes} />
     </div>
     <footer>
       <span>
