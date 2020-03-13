@@ -111,7 +111,7 @@
 
 {#await data.fetch() then data}
   <main class="grid-container">
-    <h1 class="header">Confirmed COVID-19 Cases over time</h1>
+    <h1 class="header">COVID-19 Map</h1>
     <div class="map">
       <Map body={data.countries} countryCodes={data.countryCodes} />
     </div>
