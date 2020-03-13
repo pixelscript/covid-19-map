@@ -12,6 +12,11 @@
 </script>
 
 <style>
+  @media (max-width: 800px) {
+    .chart {
+      display:none;
+    }
+  }
   .chart {
     text-align: center;
   }
