@@ -1,6 +1,11 @@
 <script>
   import { selectedDateIndex } from "./main.store";
   export let dates = ["NO DATA"];
+  $: {
+    if (dates.length) {
+      $selectedDateIndex = dates.length - 1;
+    }
+  }
   $: date = dates[$selectedDateIndex];
   let intVal;
   const play = () => {
