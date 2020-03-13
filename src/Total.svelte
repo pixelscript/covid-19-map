@@ -1,14 +1,19 @@
 <script>
   import { selectedDateIndex } from "./main.store";
+  import Chart from "./Chart.svelte";
   export let body;
-  let total;
-  $: total = calcTotal($selectedDateIndex);
-  const calcTotal = () => {
+  let totalCases;
+  $: totalCases = calcTotal($selectedDateIndex, "cases");
+  let totalRecoveries;
+  $: totalRecoveries = calcTotal($selectedDateIndex, "recoveries");
+  let totalDeaths;
+  $: totalDeaths = calcTotal($selectedDateIndex, "deaths");
+  const calcTotal = (index, dim) => {
     let total = 0;
     body.forEach(country => {
-      total += country.data[$selectedDateIndex]['cases'].value;
+      total += country.data[index][dim].value;
     });
-    return total.toLocaleString();
+    return total;
   };
 </script>
 
@@ -25,7 +30,7 @@
     width: 4em;
     background: rgba(185, 174, 174, 0.5);
     line-height: 3em;
-    color:#333;
+    color: #333;
   }
   .title {
     font-size: 0.5em;
@@ -36,9 +41,30 @@
     font-size: 1em;
     line-height: 2.5em;
   }
+
+  .chart {
+    display: block;
+    text-align: center;
+    margin-top: -11em;
+    font-size: 2em;
+    margin-left: 1em;
+    height: 5em;
+    width: 5em;
+    line-height: 3em;
+
+  }
 </style>
 
 <span class="total">
-  <div class="title">Total</div>
-  <div class="value">{total}</div>
+  <div class="title">Total Cases</div>
+  <div class="value">{totalCases.toLocaleString()}</div>
+</span>
+
+<span>
+  <div class="chart">
+    <Chart
+      cases={totalCases}
+      recoveries={totalRecoveries}
+      deaths={totalDeaths} />
+  </div>
 </span>

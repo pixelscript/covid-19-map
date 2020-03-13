@@ -60,6 +60,11 @@
   table td {
     padding: 0.5rem;
   }
+
+  .limit {
+    max-width: 170px;
+    text-overflow: ellipsis;
+  }
 </style>
 
 <div class="hider" />
@@ -67,7 +72,9 @@
   <thead>
     <tr>
       <th>Country/Region</th>
-      <th>Confirmed cases</th>
+      <th>Cases</th>
+      <th>Deaths</th>
+      <th>Recoveries</th>
     </tr>
   </thead>
   <tbody bind:this={tBody}>
@@ -77,9 +84,19 @@
         on:mouseover={() => {
           selectedCountryCode.set(row.codeA2);
         }}>
-        <td>{row.name}</td>
+        <td class="limit tooltip" title={row.name}>{row.name}</td>
         <td>{row.data[$selectedDateIndex]['cases'].value.toLocaleString()}</td>
+        <td>{row.data[$selectedDateIndex]['deaths'].value.toLocaleString()}</td>
+        <td>
+          {row.data[$selectedDateIndex]['recoveries'].value.toLocaleString()}
+        </td>
       </tr>
     {/each}
+    <tr>
+      <td class="limit tooltip">Total</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
