@@ -3,11 +3,13 @@
   import Chart from "./Chart.svelte";
   export let body;
   let totalCases;
-  $: totalCases = calcTotal($selectedDateIndex, "cases");
   let totalRecoveries;
-  $: totalRecoveries = calcTotal($selectedDateIndex, "recoveries");
   let totalDeaths;
-  $: totalDeaths = calcTotal($selectedDateIndex, "deaths");
+  $: {
+    totalCases = calcTotal($selectedDateIndex, "cases");
+    totalRecoveries = calcTotal($selectedDateIndex, "recoveries");
+    totalDeaths = calcTotal($selectedDateIndex, "deaths");
+  }
   const calcTotal = (index, dim) => {
     let total = 0;
     body.forEach(country => {
@@ -51,7 +53,6 @@
     height: 5em;
     width: 5em;
     line-height: 3em;
-
   }
 </style>
 

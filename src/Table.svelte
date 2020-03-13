@@ -92,11 +92,5 @@
         </td>
       </tr>
     {/each}
-    <tr>
-      <td class="limit tooltip">Total</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
   </tbody>
 </table>

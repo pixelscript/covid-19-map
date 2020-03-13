@@ -56,8 +56,7 @@
       fill="transparent"
       stroke="#85ed85"
       stroke-width="10"
-      stroke-dasharray="calc({casePercent + deathPercent + recoveryPercent} *
-      31.4 / 100) 31.4"
+      stroke-dasharray="{(casePercent + deathPercent + recoveryPercent) * 31.4 / 100} 31.4"
       transform="rotate(-90) translate(-20)" />
     <circle
       r="5"
@@ -66,17 +65,19 @@
       fill="transparent"
       stroke="hsl(10,100%,60%)"
       stroke-width="10"
-      stroke-dasharray="calc({casePercent + deathPercent} * 31.4 / 100) 31.4"
+      stroke-dasharray="{(casePercent + deathPercent) * 31.4 / 100} 31.4"
       transform="rotate(-90) translate(-20)" />
     <circle
       r="5"
       cx="10"
       cy="10"
       fill="transparent"
-      stroke="rgb(200, 200, 200)"
+      stroke="#d3cecf"
       stroke-width="10"
-      stroke-dasharray="calc({casePercent} * 31.4 / 100) 31.4"
+      stroke-dasharray="{casePercent * 31.4 / 100} 31.4"
       transform="rotate(-90) translate(-20)" />
+    <circle r="5" cx="10" cy="10" stroke="#aaa" fill="#eee" stroke-width="0.1"/>
+    <circle r="9.95" cx="10" cy="10" stroke="#bbb" fill="transparent" stroke-width="0.1"/>
 
   </svg>
   <div class="key">
