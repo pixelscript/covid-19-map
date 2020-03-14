@@ -9,6 +9,7 @@
   $: date = dates[$selectedDateIndex];
   let intVal;
   const play = () => {
+    clearInterval(intVal);
     selectedDateIndex.set(0);
     intVal = setInterval(() => {
       if ($selectedDateIndex + 1 < dates.length) {
@@ -16,7 +17,7 @@
       } else {
         clearInterval(intVal);
       }
-    }, 250);
+    }, 100);
   };
 </script>
 
