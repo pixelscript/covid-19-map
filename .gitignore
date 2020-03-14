@@ -1,4 +1,10 @@
 /node_modules/
-/public/build/
-
+/public/
+/src/
+/public/
+package.json
+package-lock.json
+README.md
+rollup.config.js
+screen.png
 .DS_Store
