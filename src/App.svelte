@@ -1,4 +1,5 @@
 <script>
+  import Bars from "./Bars.svelte";
   import Header from "./Header.svelte";
   import Map from "./Map.svelte";
   import Table from "./Table.svelte";
@@ -88,6 +89,7 @@
   .map {
     grid-area: map;
     background: #eee;
+    overflow-x:scroll;
   }
 
   .table {
@@ -113,7 +115,8 @@
       <Header countries={data.countries} />
     </div>
     <div class="map">
-      <Map body={data.countries} countryCodes={data.countryCodes} />
+      <!-- <Map body={data.countries} /> -->
+      <Bars countries={data.countries}></Bars>
     </div>
     <div class="total">
       <Total totals={data.totals} countries={data.countries} />

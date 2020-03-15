@@ -25,7 +25,7 @@
     line-height: 1em;
     padding: 0;
     margin: 0;
-        vertical-align: middle;
+    vertical-align: middle;
   }
 
   @media (max-width: 500px) {
