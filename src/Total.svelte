@@ -60,6 +60,12 @@
       display:none;
     }
   }
+
+  @media (max-height: 620px) and (min-aspect-ratio: 4/3) {
+    .chart {
+      display:none;
+    }
+  }
   @media (max-width: 800px) {
     .chart {
       width: 4em;

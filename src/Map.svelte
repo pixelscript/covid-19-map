@@ -65,7 +65,10 @@
   .radio-option {
     margin: 0.5em;
   }
-
+  .radio {
+    position:absolute;
+    background: #eee;
+  }
   .radio input {
     margin-left:0.5em;
   }
