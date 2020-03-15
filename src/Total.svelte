@@ -1,5 +1,5 @@
 <script>
-  import { selectedDateIndex, selectedCountryCode } from "./main.store";
+  import { selectedDateIndex, selectedCountryCode, type } from "./main.store";
   import Chart from "./Chart.svelte";
   import _ from "lodash";
   export let totals;
@@ -24,12 +24,12 @@
     border: 1px solid #aaa;
     display: block;
     text-align: center;
-    padding: 0.5em;
+    padding: 0.5em 0.25em;
     margin-top: -4.5em;
     font-size: 2em;
     margin-left: 1em;
     height: 2.5em;
-    width: 4em;
+    width: 4.5em;
     background: rgba(185, 174, 174, 0.5);
     line-height: 3em;
     color: #333;
@@ -76,10 +76,10 @@
 
 <span class="total">
   <div class="title">
-    {#if $selectedCountryCode}Selected{:else}Total{/if}
-    Cases
+    {#if $selectedCountryCode}Country{:else}Total{/if}
+    {$type.charAt(0).toUpperCase() + $type.slice(1).toLowerCase()}
   </div>
-  <div class="value">{total.cases.toLocaleString()}</div>
+  <div class="value">{total[$type].toLocaleString()}</div>
 </span>
 
 <span>

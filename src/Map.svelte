@@ -3,6 +3,7 @@
   import { flip } from "svelte/animate";
   import _ from "lodash";
   import {
+    type,
     selectedCountryCode,
     highlightCountryCode,
     selectedDateIndex
@@ -14,12 +15,12 @@
 
   const paths = world.paths;
   let countries;
-  $: if (body.length && !isNaN($selectedDateIndex)) {
+  $: if (body.length && $type && !isNaN($selectedDateIndex)) {
     countries = [];
     Object.keys(paths).forEach(code => {
       const d = _.find(body, { codeA2: code });
-      const total = d ? d.data[$selectedDateIndex]["cases"].value : 0;
-      const log = d ? d.data[$selectedDateIndex]["cases"].logPercent : 0;
+      const total = d ? d.data[$selectedDateIndex][$type].value : 0;
+      const log = d ? d.data[$selectedDateIndex][$type].logPercent : 0;
       const hasData = d ? true : false;
       countries.push({
         code,
@@ -30,7 +31,6 @@
         total
       });
     });
-    countries = countries;
   }
 
   function logToCol(total, log) {
@@ -58,9 +58,35 @@
     padding: 10px;
     box-sizing: border-box;
   }
+  .radio, .radio-option, .radio label {
+    float: left;
+    cursor: pointer;
+  }
+  .radio-option {
+    margin: 0.5em;
+  }
+
+  .radio input {
+    margin-left:0.5em;
+  }
 </style>
 
 <figure>
+  <div class="radio">
+    <div class="radio-option">
+      <input type="radio" id="cases" bind:group={$type} name="gender" value="cases" />
+      <label for="cases">Cases: </label>
+    </div>
+
+    <div class="radio-option">
+      <input type="radio" id="deaths" bind:group={$type} name="gender" value="deaths" />
+      <label for="deaths">Deaths: </label>
+    </div>
+    <div class="radio-option">
+      <input type="radio" id="recoveries" bind:group={$type} name="gender" value="recoveries" />
+      <label for="recoveries">Recoveries: </label>
+    </div>
+  </div>
   <svg
     version="1.1"
     id="Layer_1"
