@@ -6,7 +6,14 @@
     selectedCountryCode
   } from "./main.store";
   export let countries;
-  let max = countries[0].data[countries[0].data.length-1].cases.value;
+  let max = 0;
+  $: {
+    console.log($selectedDateIndex);
+    max = 0;
+    countries.forEach((country,i)=>{
+      max = Math.max(max,country.data[$selectedDateIndex].cases.diff);
+    })
+  }
 </script>
 
 <style>
@@ -41,7 +48,7 @@
   {#each countries as country, i}
   <div class="row">
     <div class="name">{country.name}</div>
-    <div class="value" style="width:{(country.data[$selectedDateIndex].cases.value / countries[0].data[countries[0].data.length-1].cases.value)*80}%"></div>
+    <div class="value" style="width:{(country.data[$selectedDateIndex].cases.diff / max)*80}%"></div>
   </div>
   {/each}
 </div>
