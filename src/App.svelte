@@ -1,4 +1,5 @@
 <script>
+  import Header from "./Header.svelte";
   import Map from "./Map.svelte";
   import Table from "./Table.svelte";
   import Total from "./Total.svelte";
@@ -55,17 +56,14 @@
       font-size: 0.5em;
     }
   }
-  h1,
-  span {
+  .header {
     grid-area: header;
+    background: #b99a9a;
+  }
+  span {
     text-align: center;
     margin: 0;
     padding: 0.5em;
-    background: #b99a9a;
-    color: white;
-    font-size: 1.5em;
-  }
-  span {
     font-size: 0.8em;
     width: 100%;
     box-sizing: border-box;
@@ -111,18 +109,23 @@
 
 {#await data.fetch() then data}
   <main class="grid-container">
-    <h1 class="header">COVID-19 Map</h1>
+    <div class="header">
+      <Header countries={data.countries} />
+    </div>
     <div class="map">
       <Map body={data.countries} countryCodes={data.countryCodes} />
     </div>
     <div class="total">
-      <Total body={data.countries} />
+      <Total totals={data.totals} countries={data.countries} />
     </div>
     <div class="slider">
       <Slider dates={data.dates} />
     </div>
     <div class="table">
-      <Table class="table" body={data.countries} countryCodes={data.countryCodes} />
+      <Table
+        class="table"
+        body={data.countries}
+        countryCodes={data.countryCodes} />
     </div>
     <footer>
       <span>

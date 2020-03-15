@@ -1,15 +1,31 @@
 <script>
-  import { selectedCountryCode, selectedDateIndex } from "./main.store";
+  import {
+    searchFilter,
+    highlightCountryCode,
+    selectedDateIndex,
+    selectedCountryCode
+  } from "./main.store";
   import { afterUpdate } from "svelte";
   export let body;
   let tBody;
   let over = false;
   afterUpdate(() => {
-    const selected = tBody.querySelector(".selected");
-    if (selected && !over) {
-      selected.scrollIntoView(false);
+    const highlighted = tBody.querySelector(".highlighted");
+    if (highlighted && !over && !$selectedCountryCode) {
+      highlighted.scrollIntoView(false);
     }
   });
+
+  const getClasses = code => {
+    const classes = [];
+    if (code === $highlightCountryCode) {
+      classes.push("highlighted");
+    }
+    if (code === $selectedCountryCode) {
+      classes.push("selected");
+    }
+    return classes.join(" ");
+  };
 </script>
 
 <style>
@@ -52,8 +68,15 @@
   table tr:hover {
     background-color: #abcee3;
   }
+  tbody tr {
+    cursor: pointer;
+  }
+  table tr.selected td {
+    border: 1px solid red;
+    background: #ffc8c4;
+  }
 
-  table tr.selected {
+  table tr.highlighted {
     background-color: #abcee3;
   }
   table th,
@@ -79,18 +102,33 @@
   </thead>
   <tbody bind:this={tBody}>
     {#each body as row}
-      <tr
-        class={row.codeA2 === $selectedCountryCode ? 'selected' : ''}
-        on:mouseover={() => {
-          selectedCountryCode.set(row.codeA2);
-        }}>
-        <td class="limit tooltip" title={row.name}>{row.name}</td>
-        <td>{row.data[$selectedDateIndex]['cases'].value.toLocaleString()}</td>
-        <td>{row.data[$selectedDateIndex]['deaths'].value.toLocaleString()}</td>
-        <td>
-          {row.data[$selectedDateIndex]['recoveries'].value.toLocaleString()}
-        </td>
-      </tr>
+      {#if !$searchFilter || row.name
+          .toLowerCase()
+          .indexOf($searchFilter.toLowerCase()) !== -1}
+        <tr
+          class={getClasses(row.codeA2, $highlightCountryCode, $selectedCountryCode)}
+          on:mouseover={() => {
+            $highlightCountryCode = row.codeA2;
+          }}
+          on:click={() => {
+            if ($selectedCountryCode === row.codeA2) {
+              $selectedCountryCode = null;
+            } else {
+              $selectedCountryCode = row.codeA2;
+            }
+          }}>
+          <td class="limit tooltip" title={row.name}>{row.name}</td>
+          <td>
+            {row.data[$selectedDateIndex]['cases'].value.toLocaleString()}
+          </td>
+          <td>
+            {row.data[$selectedDateIndex]['deaths'].value.toLocaleString()}
+          </td>
+          <td>
+            {row.data[$selectedDateIndex]['recoveries'].value.toLocaleString()}
+          </td>
+        </tr>
+      {/if}
     {/each}
   </tbody>
 </table>

@@ -5,15 +5,22 @@
   let total, casePercent, deathPercent, recoveryPercent;
   $: {
     total = cases + deaths + recoveries;
-    casePercent = ((cases / total) * 100);
-    deathPercent = ((deaths / total) * 100);
-    recoveryPercent = ((recoveries / total) * 100);
+    casePercent = nanProtect((cases / total) * 100);
+    deathPercent = nanProtect((deaths / total) * 100);
+    recoveryPercent = nanProtect((recoveries / total) * 100);
+  }
+
+  function nanProtect(value){
+    return isNaN(value) ? 0 : value;
   }
 </script>
 
 <style>
   @media (max-width: 800px) {
-    .chart {
+    .key {
+      font-size: 1em;
+    }
+    span {
       display:none;
     }
   }
@@ -87,14 +94,14 @@
   </svg>
   <div class="key">
     <div class="key-color cases" />
-    <div class="label">Cases ({casePercent.toFixed(1)}%)</div>
+    <div class="label">Cases<span> ({casePercent.toFixed(1)}%)</span></div>
   </div>
   <div class="key">
     <div class="key-color deaths" />
-    <div class="label">Deaths ({deathPercent.toFixed(1)}%)</div>
+    <div class="label">Deaths<span> ({deathPercent.toFixed(1)}%)</span></div>
   </div>
   <div class="key">
     <div class="key-color recoveries" />
-    <div class="label">Recoveries ({recoveryPercent.toFixed(1)}%)</div>
+    <div class="label">Recoveries<span> ({recoveryPercent.toFixed(1)}%)</span></div>
   </div>
 </div>

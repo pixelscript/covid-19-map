@@ -1,39 +1,43 @@
 <script>
-  import { draw } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
-  import _ from 'lodash';
-  import { selectedCountryCode, selectedDateIndex } from './main.store';
+  import { draw } from "svelte/transition";
+  import { flip } from "svelte/animate";
+  import _ from "lodash";
+  import {
+    selectedCountryCode,
+    highlightCountryCode,
+    selectedDateIndex
+  } from "./main.store";
   import world from "./world-mill.json";
-  import { fade } from 'svelte/transition';
+  import { fade } from "svelte/transition";
 
   export let body = [];
 
   const paths = world.paths;
   let countries;
   $: if (body.length && !isNaN($selectedDateIndex)) {
-    countries= [];
-    Object.keys(paths).forEach((code)=>{
-      const d =  _.find(body, {codeA2: code});
-      const total = d ? d.data[$selectedDateIndex]['cases'].value : 0;
-      const log = d ? d.data[$selectedDateIndex]['cases'].logPercent : 0;
+    countries = [];
+    Object.keys(paths).forEach(code => {
+      const d = _.find(body, { codeA2: code });
+      const total = d ? d.data[$selectedDateIndex]["cases"].value : 0;
+      const log = d ? d.data[$selectedDateIndex]["cases"].logPercent : 0;
       const hasData = d ? true : false;
       countries.push({
         code,
         path: paths[code].path,
         name: paths[code].name,
-        color: logToCol(total,log),
+        color: logToCol(total, log),
         hasData,
         total
-      })
+      });
     });
     countries = countries;
   }
 
-  function logToCol(total,log){
-    if(!total) {
+  function logToCol(total, log) {
+    if (!total) {
       return "hsl(10,0%,70%)";
     }
-    return "hsl(10,"+ log +"%,60%)";
+    return "hsl(10," + log + "%,60%)";
   }
 </script>
 
@@ -42,13 +46,13 @@
     margin: 0 0 1em 0;
     text-align: center;
     margin: 0 auto;
-    height:100%;
+    height: 100%;
   }
 
   svg {
     width: 100%;
     margin: 0 0 1em 0;
-    height:100%;
+    height: 100%;
   }
   figure {
     padding: 10px;
@@ -72,19 +76,29 @@
     <g>
       {#each countries as country (country)}
         <path
-          style="cursor: {country.hasData ? 'pointer' : 'normal'}; fill:{country.color}; stroke:hsl(100,25%,16%); stroke-width: {country.code == $selectedCountryCode ? 1 : 0}; paint-order: fill;"
+          style="cursor: {country.hasData ? 'pointer' : 'normal'}; fill:{country.color};
+          stroke:hsl(100,25%,16%); stroke-width: {country.code == $highlightCountryCode || country.code == $selectedCountryCode ? 1 : 0};
+          paint-order: fill;"
           d={country.path}
           on:mouseover={() => {
-            if(country.hasData) {
-              selectedCountryCode.set(country.code);
+            if (country.hasData) {
+              $highlightCountryCode = country.code;
+            }
+          }}
+          on:click={() => {
+            if (country.hasData) {
+              if ($selectedCountryCode === country.code) {
+                $selectedCountryCode = null;
+              } else {
+                $selectedCountryCode = country.code;
+              }
             }
           }}
           on:mouseout={() => {
-            if(country.hasData) {
-              selectedCountryCode.set(null);
+            if (country.hasData) {
+              $highlightCountryCode = null;
             }
-          }}
-        />
+          }} />
       {/each}
     </g>
   </svg>

@@ -46,6 +46,7 @@
     grid-template-rows: 1fr;
     grid-template-areas: "button slider";
     gap: 1em;
+    padding: 0 8px;
   }
 
   .button {

@@ -1,22 +1,22 @@
 <script>
-  import { selectedDateIndex } from "./main.store";
+  import { selectedDateIndex, selectedCountryCode } from "./main.store";
   import Chart from "./Chart.svelte";
-  export let body;
-  let totalCases;
-  let totalRecoveries;
-  let totalDeaths;
+  import _ from "lodash";
+  export let totals;
+  export let countries;
+  let total;
   $: {
-    totalCases = calcTotal($selectedDateIndex, "cases");
-    totalRecoveries = calcTotal($selectedDateIndex, "recoveries");
-    totalDeaths = calcTotal($selectedDateIndex, "deaths");
+    if ($selectedCountryCode) {
+      const country = _.find(countries, { codeA2: $selectedCountryCode });
+      total = {
+        cases: country.data[$selectedDateIndex].cases.value,
+        deaths: country.data[$selectedDateIndex].deaths.value,
+        recoveries: country.data[$selectedDateIndex].recoveries.value
+      };
+    } else {
+      total = totals[$selectedDateIndex];
+    }
   }
-  const calcTotal = (index, dim) => {
-    let total = 0;
-    body.forEach(country => {
-      total += country.data[index][dim].value;
-    });
-    return total;
-  };
 </script>
 
 <style>
@@ -54,18 +54,39 @@
     width: 5em;
     line-height: 3em;
   }
+
+  @media (max-width: 800px) and (min-aspect-ratio: 4/3) {
+    .chart {
+      display:none;
+    }
+  }
+  @media (max-width: 800px) {
+    .chart {
+      width: 4em;
+      margin-top: -10em;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .chart {
+      display:none;
+    }
+  }
 </style>
 
 <span class="total">
-  <div class="title">Total Cases</div>
-  <div class="value">{totalCases.toLocaleString()}</div>
+  <div class="title">
+    {#if $selectedCountryCode}Selected{:else}Total{/if}
+    Cases
+  </div>
+  <div class="value">{total.cases.toLocaleString()}</div>
 </span>
 
 <span>
   <div class="chart">
     <Chart
-      cases={totalCases}
-      recoveries={totalRecoveries}
-      deaths={totalDeaths} />
+      cases={total.cases}
+      recoveries={total.recoveries}
+      deaths={total.deaths} />
   </div>
 </span>

@@ -5,9 +5,11 @@ class Data {
   process(data) {
     const dates = data.series.map(this.formatDate);
     const countries = data.countries;
+    const totals = data.totals;
     return {
       countries,
-      dates
+      dates,
+      totals
     };
   }
 
