@@ -4,8 +4,8 @@
   export let recoveries;
   let total, casePercent, deathPercent, recoveryPercent;
   $: {
-    total = cases + deaths + recoveries;
-    casePercent = nanProtect((cases / total) * 100);
+    total = cases;
+    casePercent = nanProtect(((cases - deaths - recoveries)/ total) * 100);
     deathPercent = nanProtect((deaths / total) * 100);
     recoveryPercent = nanProtect((recoveries / total) * 100);
   }
@@ -94,7 +94,7 @@
   </svg>
   <div class="key">
     <div class="key-color cases" />
-    <div class="label">Cases<span> ({casePercent.toFixed(1)}%)</span></div>
+    <div class="label">New Cases<span> ({casePercent.toFixed(1)}%)</span></div>
   </div>
   <div class="key">
     <div class="key-color deaths" />
