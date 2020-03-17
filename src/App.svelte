@@ -6,6 +6,9 @@
   import Total from "./Total.svelte";
   import Slider from "./Slider.svelte";
   import data from "./data";
+  import { nav } from "./main.store";
+
+  let view = "map";
 </script>
 
 <style>
@@ -89,7 +92,7 @@
   .map {
     grid-area: map;
     background: #eee;
-    overflow-x:scroll;
+    overflow-x: scroll;
   }
 
   .table {
@@ -115,8 +118,11 @@
       <Header countries={data.countries} />
     </div>
     <div class="map">
-      <!-- <Map body={data.countries} /> -->
-      <Bars countries={data.countries}></Bars>
+      {#if ($nav === 'map')}
+        <Map body={data.countries} />
+      {:else}
+        <Bars countries={data.countries} />
+      {/if}
     </div>
     <div class="total">
       <Total totals={data.totals} countries={data.countries} />
