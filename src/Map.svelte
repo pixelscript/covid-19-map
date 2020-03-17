@@ -55,22 +55,39 @@
     height: 100%;
   }
   figure {
-    padding: 10px;
+    padding: 0.5em;
     box-sizing: border-box;
   }
   .radio, .radio-option, .radio label {
     float: left;
+    height: 1em;
+    line-height: 1em;
+  }
+  .radio label {
     cursor: pointer;
   }
   .radio-option {
-    margin: 0.5em;
+    margin: 0 0.5em;
   }
   .radio {
     position:absolute;
     background: #eee;
+    padding: 0.25em;
+    margin-left: -0.5em;
+    margin-top: -0.5em;
+  }
+
+  @media (max-width: 600px) {
+    .radio {
+      margin-left: -0.5em;
+      margin-top: -0.5em;
+    }
   }
   .radio input {
+    margin:0;
     margin-left:0.5em;
+    height: 1em;
+    line-height: 1em;
   }
 </style>
 
