@@ -73,11 +73,20 @@
     background: rgb(228, 228, 228);
   }
   .value {
-    background: rgb(128, 0, 0);
     height: 1.5em;
     /* transition: width 0.05s ease-in-out; */
     border-bottom: 1px solid white;
     border-left: 1px solid white;
+  }
+
+  .cases {
+    background: rgb(200, 200, 200);
+  }
+  .deaths {
+    background: hsl(10, 100%, 60%);
+  }
+  .recoveries {
+    background: #85ed85;
   }
   .row {
     clear: both;
@@ -93,8 +102,9 @@
     line-height: 1.5em;
     background: white;
     color: #666;
-    border-bottom: 1px solid #888;
-    margin-top: 0.8em;
+    margin-top:0.8em;
+    border-bottom: 1px solid #ccc;
+        border-top: 1px solid #aaa;
   }
   .chart {
     width: 100%;
@@ -117,10 +127,10 @@
     line-height: 1em;
   }
   .radio {
+    box-sizing: border-box;
     width:100%;
     right: 0;
     background:#eee;
-    border-bottom: 1px solid #aaa;
   }
   .radio label {
     cursor: pointer;
@@ -174,7 +184,7 @@
 
   <h1>
     {$type.charAt(0).toUpperCase() + $type.slice(1).toLowerCase()} as a
-    percentage of the population
+    percentage of population
   </h1>
   {#each cntCopy as country, i (country.codeA3)}
     {#if !$searchFilter || country.name
@@ -194,7 +204,7 @@
         }}>
         <div class="name">{country.name}</div>
         <div
-          class="value"
+          class="value {$type}"
           style="width:{(percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]) / max) * 70}%" />
         <div class="name percent">
           {percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]).toPrecision(1)}%
