@@ -44,6 +44,10 @@
     margin: 0.5em 0
   }
 
+  select{
+    width: 7.5em;
+  }
+
   .grid-container {
     display: grid;
     grid-template-columns: 0fr 0fr 1fr 0fr;
