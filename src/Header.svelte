@@ -4,7 +4,8 @@
     searchFilter,
     highlightCountryCode,
     selectedDateIndex,
-    selectedCountryCode
+    selectedCountryCode,
+    nav
   } from "./main.store";
   export let countries;
   let country;
@@ -76,12 +77,41 @@
       display:none;
     }
   }
+
+  ul, li {
+    list-style:none;
+    padding:0;
+    margin: 0;
+    float:left;
+    background: #999;
+  }
+  li {
+    padding: 0 1em;
+    height: 3em;
+    line-height: 3em;
+    border-right: 1px solid white;
+    cursor:pointer;
+  }
+
+  li.selected {
+    background: #52657c;
+  }
+
+  @media (max-width: 500px) {
+    .label {
+      display:none;
+    }
+  }
 </style>
 
 <div class="head">
   <h1>😷COVID-19 Map</h1>
+  <ul>
+    <li class="{$nav=='map' ? 'selected' : ''}" on:click="{()=>{$nav='map'}}"><span class="label">Map </span>🌍</li>
+    <li class="{$nav=='chart' ? 'selected' : ''}" on:click="{()=>{$nav='chart'}}"><span class="label">Chart </span>📊</li>
+  </ul>
   {#if $selectedCountryCode}
-    <h2>Selected country:</h2>
+    <h2>Chosen:</h2>
     <Chip
       {country}
       on:removed={() => {

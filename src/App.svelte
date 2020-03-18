@@ -1,10 +1,14 @@
 <script>
+  import Bars from "./Bars.svelte";
   import Header from "./Header.svelte";
   import Map from "./Map.svelte";
   import Table from "./Table.svelte";
   import Total from "./Total.svelte";
   import Slider from "./Slider.svelte";
   import data from "./data";
+  import { nav } from "./main.store";
+
+  let view = "map";
 </script>
 
 <style>
@@ -55,6 +59,16 @@
     .grid-container {
       font-size: 0.5em;
     }
+  }
+
+  .bars {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr 1fr 0fr 2.7em;
+    grid-template-areas: "header" "map" "slider" "footer";
+  }
+
+  .bars .map {
+    overflow-x: scroll;
   }
   .header {
     grid-area: header;
@@ -108,25 +122,33 @@
 </svelte:head>
 
 {#await data.fetch() then data}
-  <main class="grid-container">
+  <main class="grid-container {($nav === 'map'?'':'bars')}">
     <div class="header">
       <Header countries={data.countries} />
     </div>
     <div class="map">
-      <Map body={data.countries} countryCodes={data.countryCodes} />
+      {#if ($nav === 'map')}
+        <Map body={data.countries} />
+      {:else}
+        <Bars countries={data.countries} />
+      {/if}
     </div>
+    {#if ($nav === 'map')}
     <div class="total">
       <Total totals={data.totals} countries={data.countries} />
     </div>
+    {/if}
     <div class="slider">
       <Slider dates={data.dates} />
     </div>
+    {#if ($nav === 'map')}
     <div class="table">
       <Table
         class="table"
         body={data.countries}
         countryCodes={data.countryCodes} />
     </div>
+    {/if}
     <footer>
       <span>
         Data source:

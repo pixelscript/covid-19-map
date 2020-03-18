@@ -25,7 +25,19 @@
     line-height: 1em;
     padding: 0;
     margin: 0;
-        vertical-align: middle;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 1200px) {
+    .name {
+      max-width:200px
+    }
+  }
+
+  @media (max-width: 850px) {
+    .name {
+      max-width:100px
+    }
   }
 
   @media (max-width: 500px) {

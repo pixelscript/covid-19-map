@@ -4,8 +4,7 @@ class Data {
 
   process(data) {
     const dates = data.series.map(this.formatDate);
-    const countries = data.countries;
-    const totals = data.totals;
+    const {countries, totals} = data;
     return {
       countries,
       dates,
