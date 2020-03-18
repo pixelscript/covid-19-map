@@ -28,6 +28,18 @@
     vertical-align: middle;
   }
 
+  @media (max-width: 1200px) {
+    .name {
+      max-width:200px
+    }
+  }
+
+  @media (max-width: 850px) {
+    .name {
+      max-width:100px
+    }
+  }
+
   @media (max-width: 500px) {
     .name {
       max-width:45px

@@ -60,6 +60,16 @@
       font-size: 0.5em;
     }
   }
+
+  .bars {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr 1fr 0fr 2.7em;
+    grid-template-areas: "header" "map" "slider" "footer";
+  }
+
+  .bars .map {
+    overflow-x: scroll;
+  }
   .header {
     grid-area: header;
     background: #b99a9a;
@@ -92,7 +102,6 @@
   .map {
     grid-area: map;
     background: #eee;
-    overflow-x: scroll;
   }
 
   .table {
@@ -113,7 +122,7 @@
 </svelte:head>
 
 {#await data.fetch() then data}
-  <main class="grid-container">
+  <main class="grid-container {($nav === 'map'?'':'bars')}">
     <div class="header">
       <Header countries={data.countries} />
     </div>
@@ -124,18 +133,22 @@
         <Bars countries={data.countries} />
       {/if}
     </div>
+    {#if ($nav === 'map')}
     <div class="total">
       <Total totals={data.totals} countries={data.countries} />
     </div>
+    {/if}
     <div class="slider">
       <Slider dates={data.dates} />
     </div>
+    {#if ($nav === 'map')}
     <div class="table">
       <Table
         class="table"
         body={data.countries}
         countryCodes={data.countryCodes} />
     </div>
+    {/if}
     <footer>
       <span>
         Data source:

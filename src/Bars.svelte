@@ -84,7 +84,7 @@
     box-sizing: border-box;
     height: 1.5em;
     border-bottom: 1px solid white;
-    cursor:pointer;
+    cursor: pointer;
   }
   h1 {
     padding: 0.5em;
@@ -94,6 +94,7 @@
     background: white;
     color: #666;
     border-bottom: 1px solid #888;
+    margin-top: 0.8em;
   }
   .chart {
     width: 100%;
@@ -104,93 +105,102 @@
     padding: 0 0 0 5px;
   }
 
+  .selected {
+    background: #ffc8c4 !important;
+  }
+
   .radio,
   .radio-option,
   .radio label {
     float: left;
-    height: 1.5em;
-    line-height: 1.5em;
-    padding: 0.5em;
+    height: 1em;
+    line-height: 1em;
+  }
+  .radio {
+    width:100%;
+    right: 0;
+    background:#eee;
+    border-bottom: 1px solid #aaa;
   }
   .radio label {
     cursor: pointer;
   }
   .radio-option {
-    margin: 0 0.2em;
+    margin: 0 0.5em;
   }
   .radio {
-    float: right;
-    padding: 0.5em;
-  }
-
-  .selected {
-    background: #ffc8c4 !important;
+    padding: 0.25em;
   }
 
   .radio input {
     margin: 0;
     margin-left: 0.5em;
-    height: 1.5em;
-    line-height: 1.5em;
+    height: 1em;
+    line-height: 1em;
   }
 </style>
 
-<div class="chart">
-  <div class="radio">
-    <div class="radio-option">
-      <input
-        type="radio"
-        id="cases"
-        bind:group={$type}
-        name="gender"
-        value="cases" />
-      <label for="cases">Cases:</label>
-    </div>
-
-    <div class="radio-option">
-      <input
-        type="radio"
-        id="deaths"
-        bind:group={$type}
-        name="gender"
-        value="deaths" />
-      <label for="deaths">Deaths:</label>
-    </div>
-    <div class="radio-option">
-      <input
-        type="radio"
-        id="recoveries"
-        bind:group={$type}
-        name="gender"
-        value="recoveries" />
-      <label for="recoveries">Recoveries:</label>
-    </div>
+<div class="radio">
+  <div class="radio-option">
+    <input
+      type="radio"
+      id="cases"
+      bind:group={$type}
+      name="gender"
+      value="cases" />
+    <label for="cases">Cases:</label>
   </div>
+
+  <div class="radio-option">
+    <input
+      type="radio"
+      id="deaths"
+      bind:group={$type}
+      name="gender"
+      value="deaths" />
+    <label for="deaths">Deaths:</label>
+  </div>
+  <div class="radio-option">
+    <input
+      type="radio"
+      id="recoveries"
+      bind:group={$type}
+      name="gender"
+      value="recoveries" />
+    <label for="recoveries">Recoveries:</label>
+  </div>
+</div>
+<div class="chart">
+
   <h1>
     {$type.charAt(0).toUpperCase() + $type.slice(1).toLowerCase()} as a
     percentage of the population
   </h1>
   {#each cntCopy as country, i (country.codeA3)}
-    <div
-      class="row {getClasses(country.codeA2, $highlightCountryCode, $selectedCountryCode)}"
-      on:mouseover={() => {
-        $highlightCountryCode = country.codeA2;
-      }}
-      on:click={() => {
-        if ($selectedCountryCode === country.codeA2) {
-          $selectedCountryCode = null;
-        } else {
-          $selectedCountryCode = country.codeA2;
-        }
-      }}>
-      <div class="name">{country.name}</div>
+    {#if !$searchFilter || country.name
+        .toLowerCase()
+        .indexOf($searchFilter.toLowerCase()) !== -1}
       <div
-        class="value"
-        style="width:{(percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]) / max) * 70}%" />
-      <div class="name percent">
-        {percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]).toPrecision(1)}%
-        ({country.data[$selectedDateIndex][$type].value.toLocaleString()})
+        class="row {getClasses(country.codeA2, $highlightCountryCode, $selectedCountryCode)}"
+        on:mouseover={() => {
+          $highlightCountryCode = country.codeA2;
+        }}
+        on:click={() => {
+          if ($selectedCountryCode === country.codeA2) {
+            $selectedCountryCode = null;
+          } else {
+            $selectedCountryCode = country.codeA2;
+          }
+        }}>
+        <div class="name">{country.name}</div>
+        <div
+          class="value"
+          style="width:{(percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]) / max) * 70}%" />
+        <div class="name percent">
+          {percent(country.data[$selectedDateIndex][$type].value, pop[country.codeA3]).toPrecision(1)}%
+          ({country.data[$selectedDateIndex][$type].value.toLocaleString()})
+        </div>
       </div>
-    </div>
+    {/if}
   {/each}
 </div>
