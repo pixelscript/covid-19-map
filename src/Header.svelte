@@ -83,7 +83,7 @@
     padding:0;
     margin: 0;
     display: inline-block;
-    background: #444;
+    background: #999;
   }
   li {
     padding: 0 1em;
@@ -94,7 +94,7 @@
   }
 
   li.selected {
-    background: #999;
+    background: #52657c;
   }
 </style>
 
