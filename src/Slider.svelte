@@ -32,27 +32,23 @@
 <style>
   input {
     width: 100%;
-    vertical-align: middle;
-  }
-  p {
-    text-align: center;
-    margin-top: -2em;
-    font-size: 2em;
-    margin-bottom: 1em;
   }
 
-  button,
+  .button,
+  .date,
+  select,
   input {
+    box-sizing: border-box;
     vertical-align: middle;
     display: inline-block;
-    height: 2.5em;
+    margin: 0.5em 0
   }
 
   .grid-container {
     display: grid;
-    grid-template-columns: 0fr 0fr 1fr;
+    grid-template-columns: 0fr 0fr 1fr 0fr;
     grid-template-rows: 1fr;
-    grid-template-areas: "button speed slider";
+    grid-template-areas: "button speed slider date";
     gap: 1em;
     padding: 0 8px;
   }
@@ -70,10 +66,18 @@
   .slider {
     grid-area: slider;
     padding: 0.5em;
+    height:2.5em;
+  }
+
+  .date {
+    grid-area: date;
+    padding: 0.3em;
+    margin:0;
+    font-size:2em
   }
 </style>
 
-<p>{date}</p>
+
 <section class="grid-container">
   <button
     type="button"
@@ -97,4 +101,5 @@
     min="0"
     max={dates.length - 1}
     bind:value={$selectedDateIndex} />
+    <div class="date">{date}</div>
 </section>
