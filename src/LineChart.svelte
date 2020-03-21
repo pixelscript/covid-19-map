@@ -1,22 +1,24 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
   import _ from 'lodash';
-  import {selectedCountryCode } from "./main.store";
+  import {selectedCountryCode, startDateIndex, endDateIndex } from "./main.store";
   export let dates = [];
   export let totals = [];
   export let countries = [];
-  const x1 = dates[0].date;
-  const x2 = dates[dates.length-1].date;
+  console.log($startDateIndex, $endDateIndex)
+  let x1 = 0;
+  let x2 = 0;
   const things = ["cases", "deaths", "recoveries"];
   const colors = ["rgb(200, 200, 200)","hsl(10, 100%, 60%)","#85ed85"];
   let data = [];
   let stacks = [];
   let max = 0;
   $: {
-    $selectedCountryCode;
+    x1 = dates[$startDateIndex].date
+    x2 = dates[$endDateIndex].date;
     data = getData();
     stacks = Pancake.stacks(data, things, "date");
-    max = stacks.reduce((max, stack) => Math.max(max, ...stack.values.map(v => v.end)), 0);
+    max = data[data.length -1].cases + data[data.length -1].deaths + data[data.length -1].recoveries;
   }
 
   const area = values =>

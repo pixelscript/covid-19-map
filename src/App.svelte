@@ -6,6 +6,7 @@
   import Table from "./Table.svelte";
   import Total from "./Total.svelte";
   import Slider from "./Slider.svelte";
+  import SliderStartEnd from "./SliderStartEnd.svelte";
   import data from "./data";
   import { nav } from "./main.store";
 
@@ -141,7 +142,7 @@
     </div>
     {/if}
     <div class="slider">
-      <Slider dates={data.dates} />
+      <SliderStartEnd dates={data.dates} />
     </div>
     {#if ($nav === 'map')}
     <div class="table">
