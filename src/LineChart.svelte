@@ -61,9 +61,8 @@
 
 <style>
   .chart {
-    height: calc(100% - 100px);
+    height: calc(100% - 130px);
     padding: 4em 4em 4em 4em;
-    margin: 0 0 36px 0;
     overflow: hidden;
   }
 
@@ -105,8 +104,8 @@
   path.data {
     stroke: none;
   }
-</style>
 
+</style>
 <div class="chart">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>
     <Pancake.Grid horizontal count={5} let:value let:first>
