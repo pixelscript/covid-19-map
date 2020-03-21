@@ -6,9 +6,8 @@
     selectedCountryCode,
     type
   } from "./main.store";
-  import { slide } from "svelte/transition";
-  import { flip } from "svelte/animate";
   import { pop } from "./populations";
+  import * as Pancake from '@sveltejs/pancake';
   import _ from "lodash";
   export let countries;
   let cntCopy = _.cloneDeep(countries);

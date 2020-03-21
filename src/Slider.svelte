@@ -8,7 +8,7 @@
       $selectedDateIndex = dates.length - 1;
     }
   }
-  $: date = dates[$selectedDateIndex];
+  $: date = dates[$selectedDateIndex].label;
   let intVal;
   function play() {
     clearInterval(intVal);

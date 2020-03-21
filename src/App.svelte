@@ -2,6 +2,7 @@
   import Bars from "./Bars.svelte";
   import Header from "./Header.svelte";
   import Map from "./Map.svelte";
+  import LineChart from "./LineChart.svelte";
   import Table from "./Table.svelte";
   import Total from "./Total.svelte";
   import Slider from "./Slider.svelte";
@@ -130,7 +131,8 @@
       {#if ($nav === 'map')}
         <Map body={data.countries} />
       {:else}
-        <Bars countries={data.countries} />
+        <!-- <Bars countries={data.countries} /> -->
+        <LineChart dates={data.dates} totals={data.totals} countries={data.countries}/>
       {/if}
     </div>
     {#if ($nav === 'map')}

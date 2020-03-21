@@ -4,4 +4,4 @@ export const selectedCountryCode = writable(false);
 export const selectedDateIndex = writable(0);
 export const searchFilter = writable('');
 export const type = writable('cases');
-export const nav = writable('map');
+export const nav = writable('chart');

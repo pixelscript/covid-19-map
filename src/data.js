@@ -18,7 +18,10 @@ class Data {
     d.setMonth(Number(da[0])-1);
     d.setDate(da[1]);
     d.setYear(String('20' + da[2]));
-    return d.toLocaleDateString();
+    return {
+      label: d.toLocaleDateString(),
+      date: d
+    };
   }
 
   async fetch() {
