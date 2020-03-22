@@ -1,11 +1,11 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
   import _ from 'lodash';
+  import {pop} from './populations'
   import {selectedCountryCode, startDateIndex, endDateIndex } from "./main.store";
   export let dates = [];
   export let totals = [];
   export let countries = [];
-  console.log($startDateIndex, $endDateIndex)
   let x1 = 0;
   let x2 = 0;
   const things = ["cases", "deaths", "recoveries"];
@@ -13,12 +13,18 @@
   let data = [];
   let stacks = [];
   let max = 0;
+  let country = {};
   $: {
     x1 = dates[$startDateIndex].date
     x2 = dates[$endDateIndex].date;
-    data = getData();
-    stacks = Pancake.stacks(data, things, "date");
-    max = data[data.length -1].cases + data[data.length -1].deaths + data[data.length -1].recoveries;
+    if(countries && $selectedCountryCode) {
+      country = findCountry($selectedCountryCode);
+    }
+    data = getData().splice($startDateIndex,$endDateIndex-$startDateIndex+1);
+    if(data.length) {
+      stacks = Pancake.stacks(data, things, "date");
+      max = data[data.length -1].cases + data[data.length -1].deaths + data[data.length -1].recoveries;
+    }
   }
 
   const area = values =>
@@ -28,7 +34,7 @@
 
   function getData() {
     if($selectedCountryCode) {
-      return findCountry($selectedCountryCode).data.map(composeTwo);
+      return country.data.map(composeTwo);
     } else {
       return totals.map(compose);
     }
@@ -43,9 +49,9 @@
     let date = dates[index].date;
     return {
       date,
-      cases: cases.value-deaths.value-recoveries.value,
-      deaths: deaths.value,
-      recoveries: recoveries.value
+      cases: (cases.value-deaths.value-recoveries.value)/pop[country.codeA3],
+      deaths: deaths.value/pop[country.codeA3],
+      recoveries: recoveries.value/pop[country.codeA3]
     }
   }
 
