@@ -7,29 +7,24 @@
     endDateIndex
   } from "./main.store";
   export let dates = [];
-  export let totals = [];
   export let countries = [];
   let x1 = 0;
   let x2 = 0;
-  const things = ["cases", "deaths"];
-  const colors = ["rgb(200, 200, 200)", "hsl(10, 100%, 60%)", "#85ed85"];
+  let things = [];
   let data = [];
   let stacks = [];
   let max = 0;
-  let country = {};
   $: {
     x1 = dates[$startDateIndex].date;
     x2 = dates[$endDateIndex].date;
-    if (countries && $selectedCountryCode) {
-      country = findCountry($selectedCountryCode);
-    }
-    data = getData().splice(
+    let {data, things} = getData();
+    data = data.splice(
       $startDateIndex,
       $endDateIndex - $startDateIndex + 1
     );
     if (data.length) {
       stacks = Pancake.stacks(data, things, "date");
-      max = data[data.length - 1].cases + data[data.length - 1].deaths;
+      max = sum(data);
     }
   }
 
@@ -38,36 +33,30 @@
       .map(d => ({ x: d.i, y: d.end }))
       .concat(values.map(d => ({ x: d.i, y: d.start })).reverse());
 
+  function sum(data) {
+    let sum = 0;
+    let obj = data[data.length-1];
+    Object.keys(obj).forEach(key => {
+      if(key!=='date') {
+        sum += obj[key]
+      }
+    })
+    return sum;
+  }
   function getData() {
-    if ($selectedCountryCode) {
-      return country.data.map(composeTwo);
-    } else {
-      return totals.map(compose);
-    }
-  }
-
-  function findCountry(code) {
-    return _.find(countries, { codeA2: code });
-  }
-
-  function composeTwo(val, index) {
-    let { cases, deaths } = val;
-    let date = dates[index].date;
-    return {
-      date,
-      cases: cases.value - deaths.value,
-      deaths: deaths.value
-    };
-  }
-
-  function compose(val, index) {
-    let { cases, deaths } = val;
-    let date = dates[index].date;
-    return {
-      date,
-      cases: cases - deaths,
-      deaths
-    };
+    let things = [];
+    let data = dates.map((d)=>{
+      return {
+        date: d.date
+      }
+    });
+    countries.forEach(country => {
+      things.push(country.codeA3)
+      country.data.forEach((val, index) => {
+        data[index][country.codeA3] = val.cases.value;
+      });
+    });
+    return {data, things};
   }
 </script>
 
@@ -142,7 +131,13 @@
     <Pancake.Svg>
       {#each stacks as s, i}
         <Pancake.SvgPolygon data={area(s.values)} let:d>
-          <path class="data" style="fill: {colors[i]}" {d} on:click={()=>{console.log(s.key)}}/>
+          <path
+            class="data"
+            style="fill: {'rgb('+(Math.random()*255)+', '+(Math.random()*255)+', '+(Math.random()*255)+')'}"
+            {d}
+            on:click={() => {
+              console.log(s.key);
+            }} />
         </Pancake.SvgPolygon>
       {/each}
     </Pancake.Svg>
