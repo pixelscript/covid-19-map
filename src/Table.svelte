@@ -97,7 +97,6 @@
       <th>Country/Region</th>
       <th>Cases</th>
       <th>Deaths</th>
-      <th>Recoveries</th>
     </tr>
   </thead>
   <tbody bind:this={tBody}>
@@ -123,9 +122,6 @@
           </td>
           <td>
             {row.data[$selectedDateIndex]['deaths'].value.toLocaleString()}
-          </td>
-          <td>
-            {row.data[$selectedDateIndex]['recoveries'].value.toLocaleString()}
           </td>
         </tr>
       {/if}

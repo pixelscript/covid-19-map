@@ -11,6 +11,9 @@
   import _ from "lodash";
   export let countries;
   let cntCopy = _.cloneDeep(countries);
+  cntCopy = cntCopy.filter((item)=>{
+    return item.codeA3 !== 'NONE';
+  });
   const length = cntCopy[0].data.length - 1;
   let max = 0;
   type.subscribe(() => {
@@ -83,9 +86,6 @@
   }
   .deaths {
     background: hsl(10, 100%, 60%);
-  }
-  .recoveries {
-    background: #85ed85;
   }
   .row {
     clear: both;
@@ -168,15 +168,6 @@
       name="gender"
       value="deaths" />
     <label for="deaths">Deaths:</label>
-  </div>
-  <div class="radio-option">
-    <input
-      type="radio"
-      id="recoveries"
-      bind:group={$type}
-      name="gender"
-      value="recoveries" />
-    <label for="recoveries">Recoveries:</label>
   </div>
 </div>
 <div class="chart">
