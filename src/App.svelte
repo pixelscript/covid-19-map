@@ -144,9 +144,7 @@
     {#if ($nav === 'map')}
     <div class="table">
       <Table
-        class="table"
-        body={data.countries}
-        countryCodes={data.countryCodes} />
+        body={data.countries} />
     </div>
     {/if}
     <footer>

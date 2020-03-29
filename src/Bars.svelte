@@ -12,6 +12,9 @@
   import _ from "lodash";
   export let countries;
   let cntCopy = _.cloneDeep(countries);
+  cntCopy = cntCopy.filter((item)=>{
+    return item.codeA3 !== 'NONE';
+  });
   const length = cntCopy[0].data.length - 1;
   let max = 0;
   type.subscribe(() => {
