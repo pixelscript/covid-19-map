@@ -7,7 +7,7 @@
   export let countries = [];
   let x1 = 0;
   let x2 = 0;
-  const things = ["cases", "deaths", "recoveries"];
+  const things = ["cases", "deaths"];
   const colors = ["rgb(200, 200, 200)","hsl(10, 100%, 60%)","#85ed85"];
   let data = [];
   let stacks = [];
@@ -22,7 +22,7 @@
     data = getData().splice($startDateIndex,$endDateIndex-$startDateIndex+1);
     if(data.length) {
       stacks = Pancake.stacks(data, things, "date");
-      max = data[data.length -1].cases + data[data.length -1].deaths + data[data.length -1].recoveries;
+      max = data[data.length -1].cases + data[data.length -1].deaths;
     }
   }
 
@@ -44,24 +44,22 @@
   }
 
   function composeTwo(val, index){
-    let {cases,deaths,recoveries} = val;
+    let {cases,deaths} = val;
     let date = dates[index].date;
     return {
       date,
-      cases: (cases.value-deaths.value-recoveries.value),
-      deaths: deaths.value,
-      recoveries: recoveries.value
+      cases: (cases.value-deaths.value),
+      deaths: deaths.value
     }
   }
 
   function compose(val, index){
-    let {cases,deaths,recoveries} = val;
+    let {cases,deaths} = val;
     let date = dates[index].date;
     return {
       date,
-      cases: cases-deaths-recoveries,
-      deaths,
-      recoveries
+      cases: cases-deaths,
+      deaths
     }
   }
 </script>
