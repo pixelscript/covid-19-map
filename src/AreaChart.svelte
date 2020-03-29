@@ -1,28 +1,35 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
-  import _ from 'lodash';
-  import {selectedCountryCode, startDateIndex, endDateIndex } from "./main.store";
+  import _ from "lodash";
+  import {
+    selectedCountryCode,
+    startDateIndex,
+    endDateIndex
+  } from "./main.store";
   export let dates = [];
   export let totals = [];
   export let countries = [];
   let x1 = 0;
   let x2 = 0;
   const things = ["cases", "deaths"];
-  const colors = ["rgb(200, 200, 200)","hsl(10, 100%, 60%)","#85ed85"];
+  const colors = ["rgb(200, 200, 200)", "hsl(10, 100%, 60%)", "#85ed85"];
   let data = [];
   let stacks = [];
   let max = 0;
   let country = {};
   $: {
-    x1 = dates[$startDateIndex].date
+    x1 = dates[$startDateIndex].date;
     x2 = dates[$endDateIndex].date;
-    if(countries && $selectedCountryCode) {
+    if (countries && $selectedCountryCode) {
       country = findCountry($selectedCountryCode);
     }
-    data = getData().splice($startDateIndex,$endDateIndex-$startDateIndex+1);
-    if(data.length) {
+    data = getData().splice(
+      $startDateIndex,
+      $endDateIndex - $startDateIndex + 1
+    );
+    if (data.length) {
       stacks = Pancake.stacks(data, things, "date");
-      max = data[data.length -1].cases + data[data.length -1].deaths;
+      max = data[data.length - 1].cases + data[data.length - 1].deaths;
     }
   }
 
@@ -32,7 +39,7 @@
       .concat(values.map(d => ({ x: d.i, y: d.start })).reverse());
 
   function getData() {
-    if($selectedCountryCode) {
+    if ($selectedCountryCode) {
       return country.data.map(composeTwo);
     } else {
       return totals.map(compose);
@@ -43,24 +50,24 @@
     return _.find(countries, { codeA2: code });
   }
 
-  function composeTwo(val, index){
-    let {cases,deaths} = val;
+  function composeTwo(val, index) {
+    let { cases, deaths } = val;
     let date = dates[index].date;
     return {
       date,
-      cases: (cases.value-deaths.value),
+      cases: cases.value - deaths.value,
       deaths: deaths.value
-    }
+    };
   }
 
-  function compose(val, index){
-    let {cases,deaths} = val;
+  function compose(val, index) {
+    let { cases, deaths } = val;
     let date = dates[index].date;
     return {
       date,
-      cases: cases-deaths,
+      cases: cases - deaths,
       deaths
-    }
+    };
   }
 </script>
 
@@ -94,7 +101,9 @@
     font-size: 14px;
     color: #999;
   }
-
+  .marker {
+    margin-top: -30px;
+  }
   .x-label {
     position: absolute;
     width: 4em;
@@ -109,8 +118,8 @@
   path.data {
     stroke: none;
   }
-
 </style>
+
 <div class="chart">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>
     <Pancake.Grid horizontal count={5} let:value let:first>
@@ -120,13 +129,20 @@
     </Pancake.Grid>
 
     <Pancake.Grid vertical ticks={data.map(d => d.date)} let:value>
-      <span class="x-label">{value.getDate()}</span>
+      <div class="x-label">
+        {#if value.getDate() === 1}
+          <div>|</div>
+          <div>{value.getMonth()}</div>
+        {:else}
+          <div class="marker">|</div>
+        {/if}
+      </div>
     </Pancake.Grid>
 
     <Pancake.Svg>
       {#each stacks as s, i}
         <Pancake.SvgPolygon data={area(s.values)} let:d>
-          <path class="data" style="fill: {colors[i]}" {d} />
+          <path class="data" style="fill: {colors[i]}" {d} on:click={()=>{console.log(s.key)}}/>
         </Pancake.SvgPolygon>
       {/each}
     </Pancake.Svg>
