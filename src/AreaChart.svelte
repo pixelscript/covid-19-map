@@ -8,25 +8,17 @@
   } from "./main.store";
   export let dates = [];
   export let countries = [];
-  let x1 = 0;
-  let x2 = 0;
-  let things = [];
-  let data = [];
-  let stacks = [];
-  let max = 0;
-  $: {
-    x1 = dates[$startDateIndex].date;
-    x2 = dates[$endDateIndex].date;
-    let {data, things} = getData();
-    data = data.splice(
-      $startDateIndex,
-      $endDateIndex - $startDateIndex + 1
-    );
-    if (data.length) {
-      stacks = Pancake.stacks(data, things, "date");
-      max = sum(data);
-    }
-  }
+  $: all = getData(countries);
+  $: things = all.things;
+  $: data = all.data;
+  $: x1 = dates[$startDateIndex].date;
+  $: x2 = dates[$endDateIndex].date;
+  $: newData = data.slice(
+    $startDateIndex,
+    $endDateIndex - $startDateIndex + 1
+  );
+  $: stacks = newData.length ? Pancake.stacks(newData, things, "date") : [];
+  $: max = sum(newData);
 
   const area = values =>
     values
@@ -35,28 +27,28 @@
 
   function sum(data) {
     let sum = 0;
-    let obj = data[data.length-1];
+    let obj = data[data.length - 1];
     Object.keys(obj).forEach(key => {
-      if(key!=='date') {
-        sum += obj[key]
-      }
-    })
-    return sum;
-  }
-  function getData() {
-    let things = [];
-    let data = dates.map((d)=>{
-      return {
-        date: d.date
+      if (key !== "date") {
+        sum += obj[key];
       }
     });
+    return sum;
+  }
+  function getData(countries) {
+    let things = [];
+    let data = dates.map(d => {
+      return {
+        date: d.date
+      };
+    });
     countries.forEach(country => {
-      things.push(country.codeA3)
+      things.push(country.codeA3);
       country.data.forEach((val, index) => {
         data[index][country.codeA3] = val.cases.value;
       });
     });
-    return {data, things};
+    return { data, things };
   }
 </script>
 
@@ -133,7 +125,7 @@
         <Pancake.SvgPolygon data={area(s.values)} let:d>
           <path
             class="data"
-            style="fill: {'rgb('+(Math.random()*255)+', '+(Math.random()*255)+', '+(Math.random()*255)+')'}"
+            style="fill: {'rgb(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ')'}"
             {d}
             on:click={() => {
               console.log(s.key);
