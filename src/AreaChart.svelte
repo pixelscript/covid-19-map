@@ -8,15 +8,26 @@
   } from "./main.store";
   export let dates = [];
   export let countries = [];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
   $: all = getData(countries);
   $: things = all.things;
   $: data = all.data;
   $: x1 = dates[$startDateIndex].date;
   $: x2 = dates[$endDateIndex].date;
-  $: newData = data.slice(
-    $startDateIndex,
-    $endDateIndex - $startDateIndex + 1
-  );
+  $: newData = data.slice($startDateIndex, $endDateIndex - $startDateIndex + 1);
   $: stacks = newData.length ? Pancake.stacks(newData, things, "date") : [];
   $: max = sum(newData);
 
@@ -25,6 +36,12 @@
       .map(d => ({ x: d.i, y: d.end }))
       .concat(values.map(d => ({ x: d.i, y: d.start })).reverse());
 
+  function colorFromString(str) {
+    const r = Math.floor(((str.charCodeAt(0)-65)/25)*256);
+    const g = Math.floor(((str.charCodeAt(1)-65)/25)*256);
+    const b = Math.floor(((str.charCodeAt(2)-65)/25)*256);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
   function sum(data) {
     let sum = 0;
     let obj = data[data.length - 1];
@@ -113,7 +130,7 @@
       <div class="x-label">
         {#if value.getDate() === 1}
           <div>|</div>
-          <div>{value.getMonth()}</div>
+          <div>{months[value.getMonth()]}</div>
         {:else}
           <div class="marker">|</div>
         {/if}
@@ -125,7 +142,7 @@
         <Pancake.SvgPolygon data={area(s.values)} let:d>
           <path
             class="data"
-            style="fill: {'rgb(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ')'}"
+            style="fill: {colorFromString(s.key)};"
             {d}
             on:click={() => {
               console.log(s.key);
