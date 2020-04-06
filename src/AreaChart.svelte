@@ -1,5 +1,6 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
+  import {onMount} from "svelte";
   import {pop} from './populations'
   import _ from "lodash";
   import {
@@ -9,6 +10,8 @@
   } from "./main.store";
   export let dates = [];
   export let countries = [];
+  let visible = false;
+  let ccode = "USA";
   const months = [
     "Jan",
     "Feb",
@@ -24,6 +27,15 @@
     "Dec"
   ];
   let percentage = false;
+  let x = 0;
+  let y = 0;
+  let chart;
+  onMount(()=>{
+    chart.addEventListener('mousemove',(e)=>{
+      x = e.clientX + 10;
+      y = e.clientY + 10;
+    })
+  });
   $: all = getData(countries) || percentage;
   $: things = all.things;
   $: data = all.data;
@@ -38,6 +50,13 @@
       .map(d => ({ x: d.i, y: d.end }))
       .concat(values.map(d => ({ x: d.i, y: d.start })).reverse());
 
+  function mouseOver(e, code) {
+    ccode = code;
+    visible = true;
+  }
+  function mouseOut(e) {
+    visible = false;
+  }
   function colorFromString(str) {
     const r = Math.floor(((str.charCodeAt(0)-65)/25)*256);
     const g = Math.floor(((str.charCodeAt(1)-65)/25)*256);
@@ -124,9 +143,20 @@
   path.data {
     stroke: none;
   }
+
+  .hover {
+    position:fixed;
+    z-index:1;
+    background:white;
+    padding:10px;
+    font-weight:bold;
+  }
 </style>
 <input type="checkbox" bind:checked={percentage}/> {percentage}
-<div class="chart">
+{#if visible}
+<div class="hover" style="left: {x}px; top:{y}px;ˆ">{ccode}</div>
+{/if}
+<div class="chart" bind:this="{chart}">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>
     <Pancake.Grid horizontal count={5} let:value let:first>
       <div class="grid-line horizontal" class:first>
@@ -152,9 +182,8 @@
             class="data"
             style="fill: {colorFromString(s.key)};"
             {d}
-            on:click={() => {
-              console.log(s.key);
-            }} />
+            on:mouseout={mouseOut}
+            on:mouseover={(e)=>{mouseOver(e,s.key)}} />
         </Pancake.SvgPolygon>
       {/each}
     </Pancake.Svg>
