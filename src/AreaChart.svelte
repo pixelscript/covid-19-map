@@ -1,5 +1,6 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
+  import {pop} from './populations'
   import _ from "lodash";
   import {
     selectedCountryCode,
@@ -22,12 +23,13 @@
     "Nov",
     "Dec"
   ];
-  $: all = getData(countries);
+  let percentage = false;
+  $: all = getData(countries) || percentage;
   $: things = all.things;
   $: data = all.data;
   $: x1 = dates[$startDateIndex].date;
   $: x2 = dates[$endDateIndex].date;
-  $: newData = data.slice($startDateIndex, $endDateIndex - $startDateIndex + 1);
+  $: newData = data.slice($startDateIndex, $endDateIndex + 1);
   $: stacks = newData.length ? Pancake.stacks(newData, things, "date") : [];
   $: max = sum(newData);
 
@@ -62,7 +64,13 @@
     countries.forEach(country => {
       things.push(country.codeA3);
       country.data.forEach((val, index) => {
-        data[index][country.codeA3] = val.cases.value;
+        let v
+        if(percentage) {
+          v = pop[country.codeA3] ? (val.cases.value / pop[country.codeA3])*100 : 0;
+        } else {
+          v = val.cases.value;
+        }
+        data[index][country.codeA3] = v;
       });
     });
     return { data, things };
@@ -117,7 +125,7 @@
     stroke: none;
   }
 </style>
-
+<input type="checkbox" bind:checked={percentage}/> {percentage}
 <div class="chart">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>
     <Pancake.Grid horizontal count={5} let:value let:first>
