@@ -97,6 +97,18 @@
 </script>
 
 <style>
+.center{
+  width:100%;
+  text-align:center;
+  height:0;
+}
+h1 {
+  display:inline;
+    line-height: 2em;
+}
+.percentage {
+  margin:0.5em;
+}
   .chart {
     height: calc(100% - 130px);
     padding: 4em 4em 4em 4em;
@@ -152,9 +164,10 @@
     font-weight:bold;
   }
 </style>
-<input type="checkbox" bind:checked={percentage}/> {percentage}
+<div class="center"><h1>Cumulative total of cases</h1></div>
+<div class="percentage"><span>As a percentage of population: </span><input type="checkbox" bind:checked={percentage}/></div>
 {#if visible}
-<div class="hover" style="left: {x}px; top:{y}px;ˆ">{ccode}</div>
+<div class="hover" style="left: {x}px; top:{y}px;ˆ">Country: {ccode}<br />Pop: {pop[ccode].toLocaleString()}</div>
 {/if}
 <div class="chart" bind:this="{chart}">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>
