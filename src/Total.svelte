@@ -10,7 +10,8 @@
       const country = _.find(countries, { codeA2: $selectedCountryCode });
       total = {
         cases: country.data[$selectedDateIndex].cases.value,
-        deaths: country.data[$selectedDateIndex].deaths.value
+        deaths: country.data[$selectedDateIndex].deaths.value,
+        recoveries: country.data[$selectedDateIndex].recoveries.value
       };
     } else {
       total = totals[$selectedDateIndex];
@@ -91,6 +92,7 @@
   <div class="chart">
     <Chart
       cases={total.cases}
-      deaths={total.deaths} />
+      deaths={total.deaths}
+      recoveries={total.recoveries}/>
   </div>
 </span>

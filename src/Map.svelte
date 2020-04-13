@@ -102,6 +102,12 @@
       <input type="radio" id="deaths" bind:group={$type} name="gender" value="deaths" />
       <label for="deaths">Deaths: </label>
     </div>
+
+    <div class="radio-option">
+      <input type="radio" id="recoveries" bind:group={$type} name="gender" value="recoveries" />
+      <label for="recoveries">Recoveries: </label>
+    </div>
+
   </div>
   <svg
     version="1.1"
