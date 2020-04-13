@@ -1,11 +1,13 @@
 <script>
   export let cases;
   export let deaths;
+  export let recoveries;
   let total, casePercent, deathPercent, recoveryPercent;
   $: {
     total = cases;
-    casePercent = nanProtect(((cases - deaths)/ total) * 100);
+    casePercent = nanProtect(((cases - deaths - recoveries)/ total) * 100);
     deathPercent = nanProtect((deaths / total) * 100);
+    recoveryPercent = nanProtect((recoveries / total) * 100);
   }
 
   function nanProtect(value){
@@ -51,6 +53,10 @@
   .deaths {
     background: hsl(10, 100%, 60%);
   }
+  .recoveries {
+    background: #85ed85;
+  }
+
 </style>
 
 <div class="chart">
@@ -94,5 +100,9 @@
   <div class="key">
     <div class="key-color deaths" />
     <div class="label">Deaths<span> ({deathPercent.toFixed(1)}%)</span></div>
+  </div>
+  <div class="key">
+    <div class="key-color recoveries" />
+    <div class="label">Recoveries<span> ({recoveryPercent.toFixed(1)}%)</span></div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 <script>
   import * as Pancake from "@sveltejs/pancake";
   import {onMount} from "svelte";
+  import {ISO, ISOMAP} from "./countryCodes"
   import {pop} from './populations'
   import _ from "lodash";
   import {
@@ -167,7 +168,7 @@ h1 {
 <div class="center"><h1>Cumulative total of cases</h1></div>
 <div class="percentage"><span>As a percentage of population: </span><input type="checkbox" bind:checked={percentage}/></div>
 {#if visible}
-<div class="hover" style="left: {x}px; top:{y}px;ˆ">Country: {ccode}<br />Pop: {pop[ccode].toLocaleString()}</div>
+<div class="hover" style="left: {x}px; top:{y}px;ˆ">Country: {ISO[ISOMAP[ccode]]}<br />Pop: {pop[ccode].toLocaleString()}</div>
 {/if}
 <div class="chart" bind:this="{chart}">
   <Pancake.Chart {x1} {x2} y1={0} y2={max}>

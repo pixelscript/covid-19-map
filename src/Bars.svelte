@@ -87,6 +87,10 @@
   .deaths {
     background: hsl(10, 100%, 60%);
   }
+  .recoveries {
+    background: #85ed85;
+  }
+
   .row {
     clear: both;
     box-sizing: border-box;
@@ -169,6 +173,17 @@
       value="deaths" />
     <label for="deaths">Deaths:</label>
   </div>
+
+  <div class="radio-option">
+    <input
+      type="radio"
+      id="recoveries"
+      bind:group={$type}
+      name="gender"
+      value="recoveries" />
+    <label for="recoveries">Recoveries:</label>
+  </div>
+
 </div>
 <div class="chart">
 
