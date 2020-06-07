@@ -1,9 +1,9 @@
 <script>
   import _ from "lodash";
+  import Chip from "./Chip.svelte";
+  import Analytics from "./analytics";
   import {
     searchFilter,
-    highlightCountryCode,
-    selectedDateIndex,
     selectedCountryCode,
     nav
   } from "./main.store";
@@ -12,7 +12,10 @@
   $: {
     country = _.find(countries, { codeA2: $selectedCountryCode });
   }
-  import Chip from "./Chip.svelte";
+  const navigate = (navString) => {
+    nav.set(navString);
+    Analytics.pageNavigation(navString, navString);
+  }
 </script>
 
 <style>
@@ -107,8 +110,8 @@
 <div class="head">
   <h1>😷COVID-19 Map</h1>
   <ul>
-    <li class="{$nav=='map' ? 'selected' : ''}" on:click="{()=>{$nav='map'}}"><span class="label">Map </span>🌍</li>
-    <li class="{$nav=='chart' ? 'selected' : ''}" on:click="{()=>{$nav='chart'}}"><span class="label">Chart </span>📊</li>
+    <li class="{$nav=='map' ? 'selected' : ''}" on:click="{()=>{navigate('map')}}"><span class="label">Map </span>🌍</li>
+    <li class="{$nav=='chart' ? 'selected' : ''}" on:click="{()=>{navigate('chart')}}"><span class="label">Chart </span>📊</li>
   </ul>
   {#if $selectedCountryCode}
     <h2>Chosen:</h2>

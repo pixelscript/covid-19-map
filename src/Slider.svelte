@@ -1,8 +1,16 @@
 <script>
   import { selectedDateIndex } from "./main.store";
+  import Analytics from "./analytics";
   export let dates = ["NO DATA"];
   let playing = false;
   let selected = "100";
+  selectedDateIndex.subscribe(()=>{
+    Analytics.gtag('event', 'Slider', {
+      /* eslint-disable camelcase */
+      event_label: `Slider`,
+      event_category: 'Slider'
+    });
+  })
   $: {
     if (dates.length) {
       $selectedDateIndex = dates.length - 1;
